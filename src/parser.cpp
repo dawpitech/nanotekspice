@@ -1,5 +1,6 @@
 #include "parser.hpp"
 #include <cstddef>
+#include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -97,7 +98,7 @@ void nts::Parser::parse_file_internal(std::string filename) {
 
     f.open(filename);
     if (!f.is_open())
-	return;
+	throw std::runtime_error("could not open " + filename);
 
     while (getline(f, line)) {
 	if (line[0] == '#' || line.empty())
