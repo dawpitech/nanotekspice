@@ -12,10 +12,13 @@ namespace nts::components::primary
 {
     class TruePrimaryComponent final : public IComponent
     {
-        void simulate(std::size_t tick) override {}
-        Tristate compute(std::size_t pin) override { return Tristate::True; }
-        void setLink(std::size_t pin, IComponent &other,
-            std::size_t otherPin) override { throw std::exception(); }
+        public:
+            ~TruePrimaryComponent() override = default;
+
+            void simulate(std::size_t tick) override {}
+            Tristate compute(std::size_t pin) override { return Tristate::True; }
+            void setLink(std::size_t pin, IComponent &other,
+                std::size_t otherPin) override { throw std::exception(); }
     };
 }
 #endif //TRUEPRIMARYCOMPONENT_HPP

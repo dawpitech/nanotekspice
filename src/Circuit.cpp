@@ -5,43 +5,24 @@
 ** Circuit.cpp
 */
 
+#include <iostream>
+
 #include "Circuit.hpp"
 
-#include <iostream>
-#include <memory>
-#include <unordered_map>
-
-#include "IComponent.hpp"
-
-namespace nts
+void nts::Circuit::addComponent(std::string name, std::unique_ptr<IComponent> comp)
 {
-    class Circuit
-    {
-        public:
-            Circuit();
-            ~Circuit() = default;
-            void addComponent(std::string name, std::unique_ptr<IComponent> comp)
-            {
-                this->_components.insert(std::make_pair(name, comp));
-            }
-            std::unique_ptr<IComponent> getComponent(const std::string& name)
-            {
-                try
-                {
-                    return std::move(this->_components.at(name));
-                } catch (std::exception& e)
-                {
-                    std::cerr << e.what();
-                    return nullptr;
-                }
-            }
+    this->_components.insert(std::make_pair(name, std::move(comp)));
+}
 
-        private:
-            std::pmr::unordered_map<std::string, std::unique_ptr<IComponent>> _components;
-    };
-
-    Circuit::Circuit()
+std::unique_ptr<nts::IComponent> nts::Circuit::getComponent(const std::string& name)
+{
+    try
     {
-        this->_components = {};
+        return std::move(this->_components.at(name));
+    }
+    catch (std::exception& e)
+    {
+        std::cerr << e.what();
+        return nullptr;
     }
 }
