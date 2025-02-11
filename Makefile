@@ -19,7 +19,7 @@ CPPFLAGS	+=	-iquote .
 
 BDIR	=	.build/release
 
-SRC	=	$(shell find . -name "*.cpp")
+SRC	=	$(shell find src -name "*.cpp")
 
 OBJ = $(SRC:%.cpp=$(BDIR)/%.o)
 
