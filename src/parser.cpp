@@ -1,12 +1,24 @@
 #include "parser.hpp"
 #include "src/Factory.hpp"
+#include "src/IComponent.hpp"
 #include <cstddef>
 #include <cstdio>
 #include <exception>
 #include <fstream>
 #include <iostream>
+#include <memory>
+#include <sstream>
 #include <stdexcept>
 #include <string>
+
+size_t get_size_t_from_string(std::string &s) {
+    std::istringstream iss(s);
+    size_t res;
+    iss >> res;
+    if (iss.fail())
+	throw std::runtime_error(s + " is not a valid number.");
+    return res;
+}
 
 void nts::Parser::parse_file(std::string filename) {
     this->parse_file_internal(filename);
@@ -79,6 +91,7 @@ void nts::Parser::extract_chipset(std::string &line) {
 void nts::Parser::extract_links(std::string &line) {
     std::string left, right;
     std::string ll, lr, rl, rr;
+    size_t l_pin, r_pin;
 
     split_in_half(line, left, right);
     std::cout << "[links] " << left << " --> " << right << std::endl;
@@ -86,8 +99,23 @@ void nts::Parser::extract_links(std::string &line) {
     split_in_half(left, ll, lr, ':');
     split_in_half(right, rl, rr, ':');
 
+    l_pin = get_size_t_from_string(lr);
+    r_pin = get_size_t_from_string(rr);
+
     std::cout << "\t[links] " << ll << " --> " << lr << std::endl;
     std::cout << "\t[links] " << rl << " --> " << rr << std::endl;
+
+    std::unique_ptr<IComponent> c1 = this->m_circuit.getComponent(ll);
+    if (c1 == nullptr)
+	throw std::runtime_error("chipset with name " + ll + " doesn't exists.");
+
+    std::unique_ptr<IComponent> c2 = this->m_circuit.getComponent(rl);
+    if (c2 == nullptr)
+	throw std::runtime_error("chipset with name " + rl + " doesn't exists.");
+
+    //TODO
+    //check that l_pin and r_pin are a valid number for said chip
+    c1->setLink(l_pin, *c2, r_pin);
 }
 
 void nts::Parser::dispatch_operations(ParserState state, std::string &line) {
