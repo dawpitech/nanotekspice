@@ -1,6 +1,8 @@
 #include "parser.hpp"
+#include "src/Factory.hpp"
 #include <cstddef>
 #include <cstdio>
+#include <exception>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -62,6 +64,16 @@ void nts::Parser::extract_chipset(std::string &line) {
 	throw std::runtime_error("link found in chipset section.");
 
     std::cout << "[chipset] " << left << " --> " << right << std::endl;
+
+    if (this->m_circuit.getComponent(right) != nullptr)
+	throw std::runtime_error("chipset with name " + right + " already exists.");
+
+    try {
+	std::unique_ptr<nts::IComponent> chipset = nts::Factory::createComponent(left);
+	this->m_circuit.addComponent(right, std::move(chipset));
+    } catch (std::exception &e) {
+	throw std::runtime_error(left + " is not a valid chipset name.");
+    }
 }
 
 void nts::Parser::extract_links(std::string &line) {

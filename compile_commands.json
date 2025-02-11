@@ -1,0 +1,90 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-W",
+      "-Wall",
+      "-Wextra",
+      "-Wundef",
+      "-Wshadow",
+      "-Wunreachable-code",
+      "-pedantic",
+      "-iquote",
+      ".",
+      "-o",
+      ".build/release/src/nanotekspice.o",
+      "src/nanotekspice.cpp"
+    ],
+    "directory": "/home/maxime/Documents/tech2/OOP/NTS",
+    "file": "/home/maxime/Documents/tech2/OOP/NTS/src/nanotekspice.cpp",
+    "output": "/home/maxime/Documents/tech2/OOP/NTS/.build/release/src/nanotekspice.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-W",
+      "-Wall",
+      "-Wextra",
+      "-Wundef",
+      "-Wshadow",
+      "-Wunreachable-code",
+      "-pedantic",
+      "-iquote",
+      ".",
+      "-o",
+      ".build/release/src/Factory.o",
+      "src/Factory.cpp"
+    ],
+    "directory": "/home/maxime/Documents/tech2/OOP/NTS",
+    "file": "/home/maxime/Documents/tech2/OOP/NTS/src/Factory.cpp",
+    "output": "/home/maxime/Documents/tech2/OOP/NTS/.build/release/src/Factory.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-W",
+      "-Wall",
+      "-Wextra",
+      "-Wundef",
+      "-Wshadow",
+      "-Wunreachable-code",
+      "-pedantic",
+      "-iquote",
+      ".",
+      "-o",
+      ".build/release/src/Circuit.o",
+      "src/Circuit.cpp"
+    ],
+    "directory": "/home/maxime/Documents/tech2/OOP/NTS",
+    "file": "/home/maxime/Documents/tech2/OOP/NTS/src/Circuit.cpp",
+    "output": "/home/maxime/Documents/tech2/OOP/NTS/.build/release/src/Circuit.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-W",
+      "-Wall",
+      "-Wextra",
+      "-Wundef",
+      "-Wshadow",
+      "-Wunreachable-code",
+      "-pedantic",
+      "-iquote",
+      ".",
+      "-o",
+      ".build/release/src/parser.o",
+      "src/parser.cpp"
+    ],
+    "directory": "/home/maxime/Documents/tech2/OOP/NTS",
+    "file": "/home/maxime/Documents/tech2/OOP/NTS/src/parser.cpp",
+    "output": "/home/maxime/Documents/tech2/OOP/NTS/.build/release/src/parser.o"
+  }
+]

@@ -1,10 +1,19 @@
+#include "src/Circuit.hpp"
 #include <string>
 
 namespace nts {
     class Parser {
     public:
+	Parser(nts::Circuit &circuit, std::string filename = "") : m_circuit(circuit) {
+	    if (filename.empty())
+		return;
+	    parse_file(filename);
+	}
+	
 	void parse_file(std::string filename);
     private:
+	nts::Circuit &m_circuit;
+	
 	enum ParserState {
 	    CHIPSETS,
 	    LINKS,

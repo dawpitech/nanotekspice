@@ -5,6 +5,7 @@
 ** nanotekspice.cpp
 */
 
+#include <exception>
 #include <iostream>
 
 #include "Circuit.hpp"
@@ -18,17 +19,14 @@ int main(const int argc, const char** argv)
         return 84;
 
     nts::Circuit circuit;
-    nts::Parser p;
+    nts::Parser p(circuit);
 
-    p.parse_file(argv[1]);
+    try {
+	p.parse_file(argv[1]);
+    } catch (std::exception &e) {
+	std::cerr << e.what() << std::endl;
+	return 84;
+    }
 
-    std::unique_ptr<nts::IComponent> true1 = nts::Factory::createComponent("true");
-    std::unique_ptr<nts::IComponent> true2 = nts::Factory::createComponent("true");
-
-    circuit.addComponent("true1", std::move(true1));
-    circuit.addComponent("true2", std::move(true2));
-
-    std::cout << circuit.getComponent("true1") << std::endl;
-    std::cout << circuit.getComponent("true2") << std::endl;
     return 0;
 };
