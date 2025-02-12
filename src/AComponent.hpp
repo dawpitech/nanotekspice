@@ -20,9 +20,17 @@ namespace nts
 
             void setLink(const std::size_t pin, IComponent& other, std::size_t otherPin) override
             {
-                this->_connections[pin - 1] = std::make_optional(
+                this->getConnections()[pin - 1] = std::make_optional(
                     std::make_pair(std::ref(other), otherPin)
                 );
+                other.getConnections()[otherPin - 1] = std::make_optional(
+                    std::make_pair(std::ref(*this), pin)
+                );
+            }
+
+            [[nodiscard]] connections_t getConnections() const override
+            {
+                return this->_connections;
             }
     };
 }

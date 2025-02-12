@@ -26,6 +26,8 @@ namespace nts
     class IComponent
     {
         public:
+            typedef std::vector<std::optional<std::pair<std::reference_wrapper<IComponent>, std::size_t>>> connections_t;
+
             virtual ~IComponent() = default;
 
             virtual void simulate(std::size_t tick) = 0;
@@ -34,10 +36,11 @@ namespace nts
                 std::size_t otherPin) = 0;
 
             [[nodiscard]] virtual std::size_t getPinNumber() const = 0;
+            [[nodiscard]] virtual connections_t getConnections() const = 0;
 
         protected:
             //Tristate currentValue
-            std::vector<std::optional<std::pair<std::reference_wrapper<IComponent>, std::size_t>>> _connections;
+            connections_t _connections;
     };
 
     namespace Exceptions
