@@ -16,23 +16,44 @@
 
 int main(const int argc, const char** argv)
 {
-    if (argc == 1)
+    if (argc != 2)
         return 84;
 
     nts::Circuit circuit;
     nts::Parser p(circuit);
 
     try {
-	    p.parse_file(argv[1]);
+            p.parse_file(argv[1]);
     } catch (std::exception &e) {
-	    std::cerr << e.what() << std::endl;
-	    return 84;
+            std::cerr << e.what() << std::endl;
+            return 84;
     }
 
-    std::unique_ptr<nts::IComponent> true1 = nts::Factory::createComponent("true");
-    std::unique_ptr<nts::IComponent> output1 = nts::Factory::createComponent("output");
+    std::cout << "> ";
+    for (std::string line; std::getline(std::cin, line);) {
+        if (line.empty()) {
+            std::cout << "> ";
+            continue;
+        }
+        nts::ParserUtils::trim_string(line);
+        if (line == "exit")
+            break;
+        if (line.find("=") != std::string::npos) {
+            std::string left, right;
 
-    output1->setLink(1, *true1, 1);
-    std::cout << output1->compute(1) << std::endl;
+            try {
+                nts::ParserUtils::split_in_half(line, left, right, '=');
+            } catch (...) {
+                std::cout << "Bad command format." << std::endl << "> ";
+                continue;
+            }
+            if (left.empty() || right.empty()) {
+                std::cout << "Bad command format." << std::endl << "> ";
+                continue;
+            }
+        }
+        std::cout << "Unknown command: " << line << std::endl << "> ";
+    }
+
     return 0;
 };

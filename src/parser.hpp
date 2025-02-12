@@ -2,7 +2,19 @@
 #include <string>
 
 namespace nts {
-    class Parser {
+    class ParserUtils {
+    public:
+	//removes spaces before and after the string
+	static void trim_string(std::string &str);
+	
+	//splits a string around a delimiter
+	//trims left and right string
+	static void split_in_half(std::string &line, std::string &left, std::string &right, char dl = ' ');
+
+	static size_t get_size_t_from_string(std::string &s);
+    };
+    
+    class Parser : ParserUtils {
     public:
 	Parser(nts::Circuit &circuit, std::string filename = "") : m_circuit(circuit) {
 	    if (filename.empty())
@@ -20,12 +32,6 @@ namespace nts {
 	    UNDEFINED
 	};
 
-	//removes spaces before and after the string
-	void trim_string(std::string &str);
-	
-	//splits a string around a delimiter
-	//trims left and right string
-	void split_in_half(std::string &line, std::string &left, std::string &right, char dl = ' ');
 	void extract_chipset(std::string &line);
 	void extract_links(std::string &line);
 	void dispatch_operations(ParserState state, std::string &line);
