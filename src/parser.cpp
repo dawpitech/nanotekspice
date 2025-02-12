@@ -16,7 +16,7 @@ size_t get_size_t_from_string(std::string &s) {
     size_t res;
     iss >> res;
     if (iss.fail())
-	throw std::runtime_error(s + " is not a valid number.");
+        throw std::runtime_error(s + " is not a valid number.");
     return res;
 }
 
@@ -31,11 +31,11 @@ void nts::Parser::trim_string(std::string &str) {
     unsigned int j = str.length() - 1;
 
     for (; str[i] != '\0'; i++)
-	if (str[i] != '\t' && str[i] != ' ')
-	    break;
+        if (str[i] != '\t' && str[i] != ' ')
+            break;
     for (; str[j] != '\0'; j--)
-	if (str[j] != '\t' && str[j] != ' ')
-	    break;
+        if (str[j] != '\t' && str[j] != ' ')
+            break;
     res = str.substr(i, j - i + 1);
     str = res;
 }
@@ -48,20 +48,20 @@ void nts::Parser::split_in_half(std::string &line, std::string &left, std::strin
     int found = 0;
 
     while ((start = line.find_first_not_of(dl, end)) != std::string::npos) {
-	end = line.find(dl, start);
-	if (found == 0 && left == "")
-	    left = line.substr(start, end - start);
-	if (found == 1 && right == "")
-	    right = line.substr(start, end - start);
-	++found;
-	if (found > 2)
-	    throw std::runtime_error("too many instructions in line");
+        end = line.find(dl, start);
+        if (found == 0 && left == "")
+            left = line.substr(start, end - start);
+        if (found == 1 && right == "")
+            right = line.substr(start, end - start);
+        ++found;
+        if (found > 2)
+            throw std::runtime_error("too many instructions in line");
     }
     if (found < 2 && dl == ' ') {
-	split_in_half(line, left, right, '\t');
+        split_in_half(line, left, right, '\t');
     }
     if (found < 2)
-	throw std::runtime_error("not enough instructions in line");
+        throw std::runtime_error("not enough instructions in line");
 
     trim_string(left);
     trim_string(right);
@@ -73,18 +73,18 @@ void nts::Parser::extract_chipset(std::string &line) {
     split_in_half(line, left, right);
 
     if ((left.find(":") != std::string::npos) || (right.find(":") != std::string::npos))
-	throw std::runtime_error("link found in chipset section.");
+        throw std::runtime_error("link found in chipset section.");
 
     std::cout << "[chipset] " << left << " --> " << right << std::endl;
 
     if (this->m_circuit.getComponent(right) != nullptr)
-	throw std::runtime_error("chipset with name " + right + " already exists.");
+        throw std::runtime_error("chipset with name " + right + " already exists.");
 
     try {
-	std::unique_ptr<nts::IComponent> chipset = nts::Factory::createComponent(left);
-	this->m_circuit.addComponent(right, std::move(chipset));
+        std::unique_ptr<nts::IComponent> chipset = nts::Factory::createComponent(left);
+        this->m_circuit.addComponent(right, std::move(chipset));
     } catch (std::exception &e) {
-	throw std::runtime_error(left + " is not a valid chipset name.");
+        throw std::runtime_error(left + " is not a valid chipset name.");
     }
 }
 
@@ -107,11 +107,11 @@ void nts::Parser::extract_links(std::string &line) {
 
     std::unique_ptr<IComponent> c1 = this->m_circuit.getComponent(ll);
     if (c1 == nullptr)
-	throw std::runtime_error("chipset with name " + ll + " doesn't exists.");
+        throw std::runtime_error("chipset with name " + ll + " doesn't exists.");
 
     std::unique_ptr<IComponent> c2 = this->m_circuit.getComponent(rl);
     if (c2 == nullptr)
-	throw std::runtime_error("chipset with name " + rl + " doesn't exists.");
+        throw std::runtime_error("chipset with name " + rl + " doesn't exists.");
 
     //TODO
     //check that l_pin and r_pin are a valid number for said chip
@@ -121,13 +121,13 @@ void nts::Parser::extract_links(std::string &line) {
 void nts::Parser::dispatch_operations(ParserState state, std::string &line) {
     switch (state) {
     case CHIPSETS:
-	extract_chipset(line);
-	break;
+        extract_chipset(line);
+        break;
     case LINKS:
-	extract_links(line);
-	break;
+        extract_links(line);
+        break;
     default:
-	throw std::runtime_error("invalid state in switch case or instruction outside of label");
+        throw std::runtime_error("invalid state in switch case or instruction outside of label");
     }
 }
 
@@ -138,23 +138,23 @@ void nts::Parser::parse_file_internal(std::string filename) {
 
     f.open(filename);
     if (!f.is_open())
-	throw std::runtime_error("could not open " + filename);
+        throw std::runtime_error("could not open " + filename);
 
     while (getline(f, line)) {
-	if (line[0] == '#' || line.empty())
-	    continue;
-	trim_string(line);
-	if (line[0] == '.') {
-	    if (line == ".chipsets:") {
-		state = CHIPSETS;
-	    } else if (line == ".links:") {
-		state = LINKS;
-	    } else {
-		throw std::runtime_error(line + " is not a valid label.");
-	    }
-	    continue;
-	}
-	dispatch_operations(state, line);
+        if (line[0] == '#' || line.empty())
+            continue;
+        trim_string(line);
+        if (line[0] == '.') {
+            if (line == ".chipsets:") {
+                state = CHIPSETS;
+            } else if (line == ".links:") {
+                state = LINKS;
+            } else {
+                throw std::runtime_error(line + " is not a valid label.");
+            }
+            continue;
+        }
+        dispatch_operations(state, line);
     }
 
     f.close();
