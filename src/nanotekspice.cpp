@@ -64,13 +64,14 @@ int main(const int argc, const char** argv)
                 std::cout << right << " is not a valid Tristate." << std::endl << "> ";
                 continue;
             }
-            std::unique_ptr<nts::IComponent> c = circuit.getComponent(left);
-            auto* rawPtr = dynamic_cast<nts::components::special::InputComponent*>(c.get());
-            if (!rawPtr) {
-                std::cout << left << " is not a valid input component." << std::endl << "> ";
-                continue;
-            }
-            rawPtr->setState(state);
+	    try {
+		nts::IComponent &c = circuit.getComponent(left);
+		auto rawPtr = dynamic_cast<nts::components::special::InputComponent&>(c);
+		rawPtr.setState(state);
+	    } catch (...) {
+		std::cout << left << " is not a valid input component." << std::endl << "> ";
+		continue;
+	    }
             std::cout << "> ";
             continue;
         }

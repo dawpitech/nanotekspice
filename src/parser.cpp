@@ -31,7 +31,7 @@ void nts::ParserUtils::trim_string(std::string &str) {
     unsigned int j = str.length() - 1;
 
     if (str.empty())
-	return;
+        return;
     for (; str[i] != '\0'; i++)
         if (str[i] != '\t' && str[i] != ' ')
             break;
@@ -74,13 +74,16 @@ void nts::Parser::extract_chipset(std::string &line) {
 
     nts::ParserUtils::split_in_half(line, left, right);
 
-    if ((left.find(":") != std::string::npos) || (right.find(":") != std::string::npos))
+    if ((left.find(':') != std::string::npos) || (right.find(':') != std::string::npos))
         throw std::runtime_error("link found in chipset section.");
 
     std::cout << "[chipset] " << left << " --> " << right << std::endl;
 
-    if (this->m_circuit.getComponent(right) != nullptr)
+    try {
+        this->m_circuit.getComponent(right);
         throw std::runtime_error("chipset with name " + right + " already exists.");
+    } catch (...) {
+    }
 
     try {
         std::unique_ptr<nts::IComponent> chipset = nts::Factory::createComponent(left);
@@ -106,21 +109,15 @@ void nts::Parser::extract_links(std::string &line) {
 
     std::cout << "\t[links] " << ll << " --> " << lr << std::endl;
     std::cout << "\t[links] " << rl << " --> " << rr << std::endl;
+    
+    IComponent &c1 = this->m_circuit.getComponent(ll);
+    IComponent &c2 = this->m_circuit.getComponent(rl);
 
-    std::unique_ptr<IComponent> c1 = this->m_circuit.getComponent(ll);
-    if (c1 == nullptr)
-        throw std::runtime_error("chipset with name " + ll + " doesn't exists.");
-
-    std::unique_ptr<IComponent> c2 = this->m_circuit.getComponent(rl);
-    if (c2 == nullptr)
-        throw std::runtime_error("chipset with name " + rl + " doesn't exists.");
-
-    if (l_pin > c1->getPinNumber() || l_pin <= 0)
+    if (l_pin > c1.getPinNumber() || l_pin <= 0)
         throw std::runtime_error(std::to_string(l_pin) + " is not a valid pin number for chipset " + ll);
-    if (r_pin > c2->getPinNumber() || r_pin <= 0)
+    if (r_pin > c2.getPinNumber() || r_pin <= 0)
         throw std::runtime_error(std::to_string(r_pin) + " is not a valid pin number for chipset " + rl);
-
-    c1->setLink(l_pin, *c2, r_pin);
+    c1.setLink(l_pin, c2, r_pin);
 }
 
 void nts::Parser::dispatch_operations(ParserState state, std::string &line) {
@@ -148,7 +145,7 @@ void nts::Parser::parse_file_internal(std::string filename) {
     while (getline(f, line)) {
         if (line[0] == '#' || line.empty())
             continue;
-	nts::ParserUtils::trim_string(line);
+        nts::ParserUtils::trim_string(line);
         if (line[0] == '.') {
             if (line == ".chipsets:") {
                 state = CHIPSETS;
