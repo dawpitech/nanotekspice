@@ -18,14 +18,12 @@ namespace nts
 {
     class Circuit
     {
-    public:
-        Circuit() = default;
-        ~Circuit() = default;
-        void addComponent(std::string name, std::unique_ptr<IComponent> comp);
-        std::unique_ptr<IComponent> getComponent(const std::string& name);
+        public:
+            void addComponent(const std::string& name, std::unique_ptr<IComponent> comp);
+            std::unique_ptr<IComponent> getComponent(const std::string& name);
 
-    private:
-        std::unordered_map<std::string, std::unique_ptr<IComponent>> _components;
+        private:
+            std::unordered_map<std::string, std::unique_ptr<IComponent>> _components;
     };
 }
 

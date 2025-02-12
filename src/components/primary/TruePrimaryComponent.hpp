@@ -8,17 +8,21 @@
 #ifndef TRUEPRIMARYCOMPONENT_HPP
     #define TRUEPRIMARYCOMPONENT_HPP
 
+    #include "src/AComponent.hpp"
+
 namespace nts::components::primary
 {
-    class TruePrimaryComponent final : public IComponent
+    class TruePrimaryComponent final : public AComponent
     {
         public:
+            explicit TruePrimaryComponent(): AComponent(PIN_NUMBER) {}
             ~TruePrimaryComponent() override = default;
 
-            void simulate(std::size_t tick) override {}
-            Tristate compute(std::size_t pin) override { return Tristate::True; }
-            void setLink(std::size_t pin, IComponent &other,
-                std::size_t otherPin) override { throw std::exception(); }
+            void simulate([[maybe_unused]] std::size_t tick) override {}
+            Tristate compute([[maybe_unused]] std::size_t pin) override
+                { return Tristate::True; }
+
+            constexpr static std::size_t PIN_NUMBER = 1;
     };
 }
 #endif //TRUEPRIMARYCOMPONENT_HPP

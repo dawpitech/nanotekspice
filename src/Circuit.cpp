@@ -9,7 +9,7 @@
 
 #include "Circuit.hpp"
 
-void nts::Circuit::addComponent(std::string name, std::unique_ptr<IComponent> comp)
+void nts::Circuit::addComponent(const std::string& name, std::unique_ptr<IComponent> comp)
 {
     this->_components.insert(std::make_pair(name, std::move(comp)));
 }
