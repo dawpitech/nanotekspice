@@ -20,14 +20,19 @@ namespace nts
 {
     class Circuit
     {
+        template <typename K>
+        typedef std::vector<std::reference_wrapper<K>> listOf;
+
         public:
             void addComponent(const std::string& name, std::unique_ptr<IComponent> comp);
-            IComponent& getComponent(const std::string& name) const;
+            [[nodiscard]] IComponent& getComponent(const std::string& name) const;
+            listOf<components::special::OutputComponent> getOutputs() const { return this->_outputs; }
+            listOf<components::special::InputComponent> getInputs() const { return this->_inputs; }
 
         private:
             std::unordered_map<std::string, std::unique_ptr<IComponent>> _components;
-            std::vector<std::reference_wrapper<components::special::OutputComponent>> _outputs;
-            std::vector<std::reference_wrapper<components::special::InputComponent>> _inputs;
+            listOf<components::special::OutputComponent> _outputs{};
+            listOf<components::special::InputComponent> _inputs{};
     };
 }
 
