@@ -33,9 +33,9 @@ namespace nts
             virtual void setLink(std::size_t pin, IComponent &other,
                 std::size_t otherPin) = 0;
 
+            constexpr static std::size_t PIN_NUMBER = 0;
+
         protected:
-            // ReSharper disable once CppUninitializedNonStaticDataMember
-            std::size_t _pinNumber;
             //Tristate currentValue
             std::vector<std::optional<std::pair<std::reference_wrapper<IComponent>, std::size_t>>> _connections;
     };

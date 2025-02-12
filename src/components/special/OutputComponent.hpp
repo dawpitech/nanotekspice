@@ -25,11 +25,8 @@ namespace nts::components::special
                     throw Exceptions::UnknownPinException();
                 if (this->_connections[0] == std::nullopt)
                     return Tristate::Undefined;
-                else
-                {
-                    auto [component, pinOther] = this->_connections[0].value();
-                    return component.get().compute(pinOther);
-                }
+                auto [component, pinOther] = this->_connections[0].value();
+                return component.get().compute(pinOther);
             }
 
             constexpr static std::size_t PIN_NUMBER = 1;

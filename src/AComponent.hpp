@@ -14,7 +14,6 @@ namespace nts
         public:
             explicit AComponent(const std::size_t pinNb)
             {
-                this->_pinNumber = pinNb;
                 this->_connections.resize(pinNb);
                 this->_connections.assign(pinNb, std::nullopt);
             }
