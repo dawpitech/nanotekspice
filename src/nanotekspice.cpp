@@ -23,11 +23,20 @@ int main(const int argc, const char** argv)
     nts::Parser p(circuit);
 
     try {
-            p.parse_file(argv[1]);
+	    p.parse_file(argv[1]);
     } catch (std::exception &e) {
-            std::cerr << e.what() << std::endl;
-            return 84;
+	    std::cerr << e.what() << std::endl;
+	    return 84;
     }
+
+    std::unique_ptr<nts::IComponent> true1 = nts::Factory::createComponent("true");
+    std::unique_ptr<nts::IComponent> input1 = nts::Factory::createComponent("input");
+    std::unique_ptr<nts::IComponent> output1 = nts::Factory::createComponent("output");
+
+    output1->setLink(1, *input1, 1);
+    std::cout << "true1: " << true1->compute(1) << std::endl;
+    std::cout << "input1: " << input1->compute(1) << std::endl;
+    std::cout << "output1: " << output1->compute(1) << std::endl;
 
     std::cout << "> ";
     for (std::string line; std::getline(std::cin, line);) {
@@ -40,7 +49,6 @@ int main(const int argc, const char** argv)
             break;
         if (line.find("=") != std::string::npos) {
             std::string left, right;
-
             try {
                 nts::ParserUtils::split_in_half(line, left, right, '=');
             } catch (...) {

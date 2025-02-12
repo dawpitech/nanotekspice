@@ -36,10 +36,10 @@ namespace nts
                 std::size_t otherPin) = 0;
 
             [[nodiscard]] virtual std::size_t getPinNumber() const = 0;
-            [[nodiscard]] virtual connections_t getConnections() const = 0;
+            [[nodiscard]] virtual connections_t& getConnections() = 0;
 
         protected:
-            //Tristate currentValue
+            std::vector<Tristate> _currentPinStates;
             connections_t _connections;
     };
 

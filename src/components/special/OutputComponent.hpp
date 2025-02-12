@@ -19,6 +19,7 @@ namespace nts::components::special
             ~OutputComponent() override = default;
 
             void simulate([[maybe_unused]] std::size_t tick) override {}
+
             Tristate compute(const std::size_t pin) override
             {
                 if (pin != 1)

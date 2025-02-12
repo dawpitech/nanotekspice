@@ -12,6 +12,7 @@
 
     #include "IComponent.hpp"
     #include "components/primary/TruePrimaryComponent.hpp"
+    #include "components/special/InputComponent.hpp"
     #include "components/special/OutputComponent.hpp"
 
 namespace nts
@@ -25,6 +26,8 @@ namespace nts
                     return std::make_unique<components::primary::TruePrimaryComponent>();
                 if (name == "output")
                     return std::make_unique<components::special::OutputComponent>();
+                if (name == "input")
+                    return std::make_unique<components::special::InputComponent>();
                 throw std::exception();
             }
     };

@@ -7,6 +7,8 @@
 
 #ifndef ACOMPONENT_HPP
     #define ACOMPONENT_HPP
+#include <iostream>
+
 namespace nts
 {
     class AComponent : public IComponent
@@ -16,10 +18,15 @@ namespace nts
             {
                 this->_connections.resize(pinNb);
                 this->_connections.assign(pinNb, std::nullopt);
+                this->_currentPinStates.resize(pinNb);
+                this->_currentPinStates.assign(pinNb, Tristate::Undefined);
             }
 
             void setLink(const std::size_t pin, IComponent& other, std::size_t otherPin) override
             {
+                if (pin > this->getPinNumber() || otherPin > other.getPinNumber())
+                    throw Exceptions::UnknownPinException();
+
                 this->getConnections()[pin - 1] = std::make_optional(
                     std::make_pair(std::ref(other), otherPin)
                 );
@@ -28,7 +35,7 @@ namespace nts
                 );
             }
 
-            [[nodiscard]] connections_t getConnections() const override
+            [[nodiscard]] connections_t& getConnections() override
             {
                 return this->_connections;
             }
