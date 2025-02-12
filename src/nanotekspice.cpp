@@ -7,12 +7,14 @@
 
 #include <exception>
 #include <iostream>
+#include <memory>
 
 #include "Circuit.hpp"
 #include "Factory.hpp"
 #include "IComponent.hpp"
 #include "AComponent.hpp"
 #include "parser.hpp"
+#include "src/components/special/InputComponent.hpp"
 
 int main(const int argc, const char** argv)
 {
@@ -23,20 +25,11 @@ int main(const int argc, const char** argv)
     nts::Parser p(circuit);
 
     try {
-	    p.parse_file(argv[1]);
+            p.parse_file(argv[1]);
     } catch (std::exception &e) {
-	    std::cerr << e.what() << std::endl;
-	    return 84;
+            std::cerr << e.what() << std::endl;
+            return 84;
     }
-
-    std::unique_ptr<nts::IComponent> true1 = nts::Factory::createComponent("true");
-    std::unique_ptr<nts::IComponent> input1 = nts::Factory::createComponent("input");
-    std::unique_ptr<nts::IComponent> output1 = nts::Factory::createComponent("output");
-
-    output1->setLink(1, *input1, 1);
-    std::cout << "true1: " << true1->compute(1) << std::endl;
-    std::cout << "input1: " << input1->compute(1) << std::endl;
-    std::cout << "output1: " << output1->compute(1) << std::endl;
 
     std::cout << "> ";
     for (std::string line; std::getline(std::cin, line);) {
@@ -47,8 +40,9 @@ int main(const int argc, const char** argv)
         nts::ParserUtils::trim_string(line);
         if (line == "exit")
             break;
-        if (line.find("=") != std::string::npos) {
+        if (line.find('=') != std::string::npos) {
             std::string left, right;
+            nts::Tristate state;
             try {
                 nts::ParserUtils::split_in_half(line, left, right, '=');
             } catch (...) {
@@ -59,6 +53,26 @@ int main(const int argc, const char** argv)
                 std::cout << "Bad command format." << std::endl << "> ";
                 continue;
             }
+
+            if (right == "0") {
+                state = nts::Tristate::False;
+            } else if (right == "1") {
+                state = nts::Tristate::True;
+            } else if (right == "U") {
+                state = nts::Tristate::Undefined;
+            } else {
+                std::cout << right << " is not a valid Tristate." << std::endl << "> ";
+                continue;
+            }
+            std::unique_ptr<nts::IComponent> c = circuit.getComponent(left);
+            auto* rawPtr = dynamic_cast<nts::components::special::InputComponent*>(c.get());
+            if (!rawPtr) {
+                std::cout << left << " is not a valid input component." << std::endl << "> ";
+                continue;
+            }
+            rawPtr->setState(state);
+            std::cout << "> ";
+            continue;
         }
         std::cout << "Unknown command: " << line << std::endl << "> ";
     }
