@@ -33,7 +33,7 @@ namespace nts
             virtual void setLink(std::size_t pin, IComponent &other,
                 std::size_t otherPin) = 0;
 
-            constexpr static std::size_t PIN_NUMBER = 0;
+            [[nodiscard]] virtual std::size_t getPinNumber() const = 0;
 
         protected:
             //Tristate currentValue

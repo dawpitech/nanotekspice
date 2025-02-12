@@ -29,6 +29,8 @@ namespace nts::components::special
                 return component.get().compute(pinOther);
             }
 
+            [[nodiscard]] std::size_t getPinNumber() const override { return PIN_NUMBER; }
+
             constexpr static std::size_t PIN_NUMBER = 1;
     };
 }
