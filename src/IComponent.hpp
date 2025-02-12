@@ -66,6 +66,12 @@ namespace nts
             public:
                 explicit UnknownPinException(): GenericNTSException("Unknown pin used") {}
         };
+
+        class UnknownChipException final : public GenericNTSException
+        {
+            public:
+                explicit UnknownChipException(): GenericNTSException("Unknown chip used") {}
+        };
     }
 }
 

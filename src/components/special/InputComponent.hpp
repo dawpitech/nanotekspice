@@ -8,7 +8,7 @@
 #ifndef INPUTCOMPONENT_HPP
     #define INPUTCOMPONENT_HPP
 
-    #include "src/IComponent.hpp"
+    #include "src/AComponent.hpp"
 
 namespace nts::components::special
 {
