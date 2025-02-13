@@ -16,12 +16,14 @@ CPPFLAGS	+=	-Wshadow
 CPPFLAGS	+=	-Wunreachable-code
 CPPFLAGS	+=	-pedantic
 CPPFLAGS	+=	-iquote .
+CPPFLAGS	+=	-MMD -MP
 
 BDIR	=	.build/release
 
 SRC	=	$(shell find src -name "*.cpp")
 
 OBJ = $(SRC:%.cpp=$(BDIR)/%.o)
+DEPS	=	$(OBJ:.o=.d)
 
 NAME = nanotekspice
 
@@ -47,3 +49,5 @@ fclean: clean
 .NOTPARRALEL: re
 .PHONY: re
 re: fclean all
+
+-include $(DEPS)
