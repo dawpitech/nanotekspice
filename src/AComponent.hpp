@@ -24,6 +24,8 @@ namespace nts
             {
                 if (pin > this->getPinNumber() || otherPin > other.getPinNumber())
                     throw Exceptions::UnknownPinException();
+                if (pin == 0 || otherPin == 0)
+                    throw Exceptions::UnknownPinException();
 
                 this->getConnections()[pin - 1] = std::make_optional(
                     std::make_pair(std::ref(other), otherPin)
