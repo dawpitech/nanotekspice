@@ -16,6 +16,7 @@
     #include "components/primary/TruePrimaryComponent.hpp"
     #include "components/special/InputComponent.hpp"
     #include "components/special/OutputComponent.hpp"
+    #include "components/gates/XorComponent.hpp"
 
 namespace nts
 {
@@ -34,6 +35,8 @@ namespace nts
                     return std::make_unique<components::special::InputComponent>();
                 if (name == "not")
                     return std::make_unique<components::gates::NotComponent>();
+                if (name == "xor")
+                    return std::make_unique<components::gates::XorComponent>();
                 throw std::exception();
             }
     };

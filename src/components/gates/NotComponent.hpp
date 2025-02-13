@@ -22,7 +22,7 @@ namespace nts::components::gates
                     return;
                 this->_connections.at(0).value().first.get().simulate(tick);
             }
-            Tristate compute([[maybe_unused]] const std::size_t pin) override
+            Tristate compute(const std::size_t pin) override
             {
                 if (pin != 2)
                     //TODO make better exception when compute is called on an input pin

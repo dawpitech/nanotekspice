@@ -73,6 +73,15 @@ namespace nts
         };
     }
 
+    inline Tristate operator^(const Tristate lhs, const Tristate rhs)
+    {
+        if (lhs == Tristate::Undefined || rhs == Tristate::Undefined)
+            return Tristate::Undefined;
+        if (lhs == rhs)
+            return Tristate::False;
+        return Tristate::True;
+    }
+
     inline Tristate operator!(const Tristate state)
     {
         if (state == Tristate::Undefined)
