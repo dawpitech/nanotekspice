@@ -40,6 +40,16 @@ int main(const int argc, const char** argv)
         nts::ParserUtils::trim_string(line);
         if (line == "exit")
             break;
+        if (line == "simulate")
+        {
+            circuit.upCurrentTick();
+            const auto newTick = circuit.getCurrentTick();
+
+            for (const auto&[name, out] : circuit.getOutputs())
+                out.get().simulate(newTick);
+            std::cout << "> ";
+            continue;
+        }
         if (line == "display")
         {
             std::cout << "tick: " << circuit.getCurrentTick() << std::endl;
