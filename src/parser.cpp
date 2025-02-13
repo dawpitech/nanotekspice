@@ -26,20 +26,17 @@ void nts::Parser::parse_file(std::string filename) {
 
 //removes spaces before and after the string
 void nts::ParserUtils::trim_string(std::string &str) {
-    std::string res;
-    unsigned int i = 0;
-    unsigned int j = str.length() - 1;
-
     if (str.empty())
         return;
-    for (; str[i] != '\0'; i++)
-        if (str[i] != '\t' && str[i] != ' ')
-            break;
-    for (; str[j] != '\0'; j--)
-        if (str[j] != '\t' && str[j] != ' ')
-            break;
-    res = str.substr(i, j - i + 1);
-    str = res;
+
+    size_t i = 0;
+    size_t j = str.length();
+
+    while (i < str.length() && (str[i] == ' ' || str[i] == '\t'))
+        i++;
+    while (j > i && (str[j - 1] == ' ' || str[j - 1] == '\t'))
+        j--;
+    str = str.substr(i, j - i);
 }
 
 //splits a string around a delimiter
@@ -80,7 +77,8 @@ void nts::Parser::extract_chipset(std::string &line) {
     std::cout << "[chipset] " << left << " --> " << right << std::endl;
 
     try {
-        this->m_circuit.getComponent(right);
+        auto &c = this->m_circuit.getComponent(right);
+	(void)c;
         throw std::runtime_error("chipset with name " + right + " already exists.");
     } catch (...) {
     }
