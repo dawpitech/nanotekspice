@@ -66,7 +66,7 @@ int main(const int argc, const char** argv)
             }
 	    try {
 		nts::IComponent &c = circuit.getComponent(left);
-		auto rawPtr = dynamic_cast<nts::components::special::InputComponent&>(c);
+		auto& rawPtr = dynamic_cast<nts::components::special::InputComponent&>(c);
 		rawPtr.setState(state);
 	    } catch (...) {
 		std::cout << left << " is not a valid input component." << std::endl << "> ";
