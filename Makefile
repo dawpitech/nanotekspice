@@ -18,31 +18,41 @@ CPPFLAGS	+=	-pedantic
 CPPFLAGS	+=	-iquote .
 CPPFLAGS	+=	-MMD -MP
 
-BDIR	=	.build/release
+BDIR	=	.build
 
 SRC	=	$(shell find src -name "*.cpp")
 
-OBJ = $(SRC:%.cpp=$(BDIR)/%.o)
-DEPS	=	$(OBJ:.o=.d)
+OBJ			= $(SRC:%.cpp=$(BDIR)/release/%.o)
+DEBUG_OBJ	= $(SRC:%.cpp=$(BDIR)/debug/%.o)
+
 
 NAME = nanotekspice
+
+.DEFAULT_GOAL := all
 
 .PHONY: all
 all: $(NAME)
 
-$(BDIR)/%.o: %.cpp
+$(BDIR)/release/%.o: %.cpp
 	@ mkdir -p $(dir $@)
 	$(CC) -o $@ -c $< $(CPPFLAGS)
 
 $(NAME): $(OBJ)
-	$(CC) $(OBJ) $(CPPFLAGS) -o $(NAME)
+	$(CC) $^ $(CPPFLAGS) -o $@
+
+$(BDIR)/debug/%.o: %.cpp
+	@ mkdir -p $(dir $@)
+	$(CC) -o $@ -c $< $(CPPFLAGS)
 
 debug: CPPFLAGS += -g3 -O0 -DIS_DEBUG
-debug: re
+debug: BDIR := .build/debug
+debug: $(DEBUG_OBJ)
+	$(CC) $^ $(CPPFLAGS) -o $@
 
 .PHONY: clean
 clean:
 	@ rm -f $(OBJ)
+	@ rm -f $(DEPS)
 	@ rm -rf .build
 
 .PHONY: fclean
@@ -53,4 +63,5 @@ fclean: clean
 .PHONY: re
 re: fclean all
 
--include $(DEPS)
+-include $(OBJ:.o=.d)
+-include $(DEBUG_OBJ:.o=.d)
