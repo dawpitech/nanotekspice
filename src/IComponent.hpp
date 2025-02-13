@@ -52,7 +52,7 @@ namespace nts
                 {
                     this->_what = what;
                 }
-                const char* what() const noexcept override
+                [[nodiscard]] const char* what() const noexcept override
                 {
                     return this->_what.c_str();
                 }
