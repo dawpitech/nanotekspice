@@ -30,22 +30,12 @@ namespace nts::components::gates
                 if (this->_connections.at(0) == std::nullopt)
                     return Tristate::Undefined;
                 auto [component, pinOther] = this->_connections.at(0).value();
-                return invert(component.get().compute(pinOther));
+                return !component.get().compute(pinOther);
             }
 
             [[nodiscard]] std::size_t getPinNumber() const override { return PIN_NUMBER; }
 
             constexpr static std::size_t PIN_NUMBER = 2;
-
-        protected:
-            static Tristate invert(const Tristate state)
-            {
-                if (state == Tristate::Undefined)
-                    return Tristate::Undefined;
-                if (state == Tristate::False)
-                    return Tristate::True;
-                return Tristate::False;
-            }
     };
 }
 #endif //NOTCOMPONENT_HPP

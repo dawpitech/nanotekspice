@@ -72,6 +72,15 @@ namespace nts
                 explicit UnknownChipException(): GenericNTSException("Unknown chip used") {}
         };
     }
+
+    inline Tristate operator!(const Tristate state)
+    {
+        if (state == Tristate::Undefined)
+            return Tristate::Undefined;
+        if (state == Tristate::False)
+            return Tristate::True;
+        return Tristate::False;
+    }
 }
 
 inline std::ostream& operator<<(std::ostream& os, const nts::Tristate& state)
