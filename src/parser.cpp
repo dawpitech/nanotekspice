@@ -1,6 +1,10 @@
-#include "parser.hpp"
-#include "src/Factory.hpp"
-#include "src/IComponent.hpp"
+/*
+** EPITECH PROJECT, 2025
+** nanotekspice
+** File description:
+** Debug.cpp
+*/
+
 #include <cstddef>
 #include <cstdio>
 #include <exception>
@@ -10,6 +14,11 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+
+#include "parser.hpp"
+#include "Debug.hpp"
+#include "src/Factory.hpp"
+#include "src/IComponent.hpp"
 
 size_t nts::ParserUtils::get_size_t_from_string(std::string &s) {
     std::istringstream iss(s);
@@ -74,7 +83,7 @@ void nts::Parser::extract_chipset(std::string &line) {
     if ((left.find(':') != std::string::npos) || (right.find(':') != std::string::npos))
         throw std::runtime_error("link found in chipset section.");
 
-    std::cout << "[chipset] " << left << " --> " << right << std::endl;
+    DEBUG_PRINT("[chipset] " << left << " --> " << right << std::endl);
 
     try {
         auto &c = this->m_circuit.getComponent(right);
@@ -97,7 +106,7 @@ void nts::Parser::extract_links(std::string &line) {
     size_t l_pin, r_pin;
 
     nts::ParserUtils::split_in_half(line, left, right);
-    std::cout << "[links] " << left << " --> " << right << std::endl;
+    DEBUG_PRINT("[links] " << left << " --> " << right << std::endl);
 
     nts::ParserUtils::split_in_half(left, ll, lr, ':');
     nts::ParserUtils::split_in_half(right, rl, rr, ':');
@@ -105,8 +114,8 @@ void nts::Parser::extract_links(std::string &line) {
     l_pin = nts::ParserUtils::get_size_t_from_string(lr);
     r_pin = nts::ParserUtils::get_size_t_from_string(rr);
 
-    std::cout << "\t[links] " << ll << " --> " << lr << std::endl;
-    std::cout << "\t[links] " << rl << " --> " << rr << std::endl;
+    DEBUG_PRINT("\t[links] " << ll << " --> " << lr << std::endl);
+    DEBUG_PRINT("\t[links] " << rl << " --> " << rr << std::endl);
     
     IComponent &c1 = this->m_circuit.getComponent(ll);
     IComponent &c2 = this->m_circuit.getComponent(rl);

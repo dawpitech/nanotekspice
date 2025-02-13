@@ -37,6 +37,9 @@ $(BDIR)/%.o: %.cpp
 $(NAME): $(OBJ)
 	$(CC) $(OBJ) $(CPPFLAGS) -o $(NAME)
 
+debug: CPPFLAGS += -g3 -O0 -DIS_DEBUG
+debug: re
+
 .PHONY: clean
 clean:
 	@ rm -f $(OBJ)
@@ -46,7 +49,7 @@ clean:
 fclean: clean
 	@ rm -f $(NAME)
 
-.NOTPARRALEL: re
+.NOTPARALLEL: re
 .PHONY: re
 re: fclean all
 

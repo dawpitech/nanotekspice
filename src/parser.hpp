@@ -1,5 +1,15 @@
-#include "src/Circuit.hpp"
+/*
+** EPITECH PROJECT, 2025
+** nanotekspice
+** File description:
+** parser.hpp
+*/
+
+#pragma once
+
 #include <string>
+
+#include "src/Circuit.hpp"
 
 namespace nts {
     class ParserUtils {
