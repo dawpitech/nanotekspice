@@ -20,8 +20,7 @@ void nts::components::gates::AndComponent::simulate(const std::size_t tick)
 nts::Tristate nts::components::gates::AndComponent::compute(const std::size_t pin)
 {
     if (pin != 3)
-        //TODO make better exception when compute is called on an input pin
-        throw std::exception();
+        throw Exceptions::IncorrectPinUsageException();
     if (this->_connections.at(0) == std::nullopt ||
         this->_connections.at(1) == std::nullopt)
         return Tristate::Undefined;

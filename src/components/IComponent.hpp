@@ -73,6 +73,13 @@ namespace nts
             public:
                 explicit UnknownChipException(): GenericNTSException("Unknown chip used") {}
         };
+
+        class IncorrectPinUsageException final : public GenericNTSException
+        {
+            public:
+                explicit IncorrectPinUsageException(): GenericNTSException
+                    ("Incorrect usage of pin (using input as output or vice-versa)") {}
+        };
     }
 
     inline Tristate operator^(const Tristate lhs, const Tristate rhs)

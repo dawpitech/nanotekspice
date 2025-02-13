@@ -18,8 +18,7 @@ void nts::components::gates::XorComponent::simulate(const std::size_t tick)
 nts::Tristate nts::components::gates::XorComponent::compute(const std::size_t pin)
 {
     if (pin != 3)
-        //TODO make better exception when compute is called on an input pin
-        throw std::exception();
+        throw Exceptions::IncorrectPinUsageException();
     if (this->_connections.at(0) == std::nullopt ||
         this->_connections.at(1) == std::nullopt)
         return Tristate::Undefined;
