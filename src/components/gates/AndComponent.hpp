@@ -2,19 +2,19 @@
 ** EPITECH PROJECT, 2025
 ** nanotekspice
 ** File description:
-** XorComponent.hpp
+** AndComponent.hpp
 */
 
-#ifndef XORCOMPONENT_HPP
-    #define XORCOMPONENT_HPP
+#ifndef ANDCOMPONENT_HPP
+    #define ANDCOMPONENT_HPP
 
 namespace nts::components::gates
 {
-    class XorComponent final : public AComponent
+    class AndComponent final : public AComponent
     {
         public:
-            explicit XorComponent(): AComponent(PIN_NUMBER) {}
-            ~XorComponent() override = default;
+            explicit AndComponent(): AComponent(PIN_NUMBER) {}
+            ~AndComponent() override = default;
 
             void simulate(const std::size_t tick) override
             {
@@ -27,13 +27,13 @@ namespace nts::components::gates
             {
                 if (pin != 3)
                     //TODO make better exception when compute is called on an input pin
-                    throw std::exception();
+                        throw std::exception();
                 if (this->_connections.at(0) == std::nullopt ||
                     this->_connections.at(1) == std::nullopt)
                     return Tristate::Undefined;
                 auto [cmpleft, cmpleft_pin] = this->_connections.at(0).value();
                 auto [cmpright, cmpright_pin] = this->_connections.at(1).value();
-                return cmpleft.get().compute(cmpleft_pin) ^ cmpright.get().compute(cmpright_pin);
+                return cmpleft.get().compute(cmpleft_pin) & cmpright.get().compute(cmpright_pin);
             }
 
             [[nodiscard]] std::size_t getPinNumber() const override { return PIN_NUMBER; }
@@ -41,4 +41,4 @@ namespace nts::components::gates
             constexpr static std::size_t PIN_NUMBER = 3;
     };
 }
-#endif //XORCOMPONENT_HPP
+#endif //ANDCOMPONENT_HPP

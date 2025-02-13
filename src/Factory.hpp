@@ -11,12 +11,13 @@
     #include <memory>
 
     #include "IComponent.hpp"
+    #include "components/gates/AndComponent.hpp"
     #include "components/gates/NotComponent.hpp"
+    #include "components/gates/XorComponent.hpp"
     #include "components/primary/FalsePrimaryComponent.hpp"
     #include "components/primary/TruePrimaryComponent.hpp"
     #include "components/special/InputComponent.hpp"
     #include "components/special/OutputComponent.hpp"
-    #include "components/gates/XorComponent.hpp"
 
 namespace nts
 {
@@ -37,6 +38,8 @@ namespace nts
                     return std::make_unique<components::gates::NotComponent>();
                 if (name == "xor")
                     return std::make_unique<components::gates::XorComponent>();
+                if (name == "and")
+                    return std::make_unique<components::gates::AndComponent>();
                 throw std::exception();
             }
     };
