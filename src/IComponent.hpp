@@ -99,6 +99,15 @@ namespace nts
             return Tristate::True;
         return Tristate::False;
     }
+
+    inline Tristate operator|(const Tristate lhs, const Tristate rhs)
+    {
+        if (lhs == Tristate::Undefined || rhs == Tristate::Undefined)
+            return Tristate::Undefined;
+        if (lhs == Tristate::True || rhs == Tristate::True)
+            return Tristate::True;
+        return Tristate::False;
+    }
 }
 
 inline std::ostream& operator<<(std::ostream& os, const nts::Tristate& state)

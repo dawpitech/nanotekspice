@@ -13,6 +13,7 @@
     #include "IComponent.hpp"
     #include "components/gates/AndComponent.hpp"
     #include "components/gates/NotComponent.hpp"
+    #include "components/gates/OrComponent.hpp"
     #include "components/gates/XorComponent.hpp"
     #include "components/primary/FalsePrimaryComponent.hpp"
     #include "components/primary/TruePrimaryComponent.hpp"
@@ -40,6 +41,8 @@ namespace nts
                     return std::make_unique<components::gates::XorComponent>();
                 if (name == "and")
                     return std::make_unique<components::gates::AndComponent>();
+                if (name == "or")
+                    return std::make_unique<components::gates::OrComponent>();
                 throw std::exception();
             }
     };
