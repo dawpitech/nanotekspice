@@ -7,7 +7,8 @@
 
 #ifndef ACOMPONENT_HPP
     #define ACOMPONENT_HPP
-#include <iostream>
+
+    #include <iostream>
 
 namespace nts
 {
