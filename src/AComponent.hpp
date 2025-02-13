@@ -18,8 +18,6 @@ namespace nts
             {
                 this->_connections.resize(pinNb);
                 this->_connections.assign(pinNb, std::nullopt);
-                this->_currentPinStates.resize(pinNb);
-                this->_currentPinStates.assign(pinNb, Tristate::Undefined);
             }
 
             void setLink(const std::size_t pin, IComponent& other, std::size_t otherPin) override

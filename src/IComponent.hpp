@@ -39,7 +39,6 @@ namespace nts
             [[nodiscard]] virtual connections_t& getConnections() = 0;
 
         protected:
-            std::vector<Tristate> _currentPinStates;
             connections_t _connections;
     };
 
