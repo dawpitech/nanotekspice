@@ -17,8 +17,8 @@
 
 #include "parser.hpp"
 #include "Debug.hpp"
+#include "components/IComponent.hpp"
 #include "src/Factory.hpp"
-#include "src/IComponent.hpp"
 
 size_t nts::ParserUtils::get_size_t_from_string(std::string &s) {
     std::istringstream iss(s);

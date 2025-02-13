@@ -10,6 +10,8 @@
 
     #include <iostream>
 
+    #include "IComponent.hpp"
+
 namespace nts
 {
     class AComponent : public IComponent

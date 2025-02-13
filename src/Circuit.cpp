@@ -8,7 +8,6 @@
 #include <iostream>
 
 #include "Circuit.hpp"
-#include "components/special/OutputComponent.hpp"
 
 void nts::Circuit::addComponent(const std::string& name, std::unique_ptr<IComponent> comp)
 {
@@ -31,7 +30,7 @@ nts::IComponent& nts::Circuit::getComponent(const std::string& name) const
     {
         return *this->_components.at(name);
     }
-    catch (std::exception& e)
+    catch (std::exception&)
     {
         throw Exceptions::UnknownChipException();
     }

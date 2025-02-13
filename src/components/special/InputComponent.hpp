@@ -8,7 +8,7 @@
 #ifndef INPUTCOMPONENT_HPP
     #define INPUTCOMPONENT_HPP
 
-    #include "src/AComponent.hpp"
+    #include "../AComponent.hpp"
 
 namespace nts::components::special
 {
@@ -18,20 +18,13 @@ namespace nts::components::special
             explicit InputComponent(): AComponent(PIN_NUMBER) {}
             ~InputComponent() override = default;
 
-            void simulate([[maybe_unused]] std::size_t tick) override
-                { this->_curState = this->_newState; }
-            Tristate compute(const std::size_t pin) override
-            {
-                if (pin != PIN_NUMBER)
-                    throw Exceptions::UnknownPinException();
-                return this->_curState;
-            }
-
-            void setState(const Tristate state) { this->_newState = state; }
+            void simulate(std::size_t tick) override;
+            Tristate compute(std::size_t pin) override;
 
             [[nodiscard]] std::size_t getPinNumber() const override { return PIN_NUMBER; }
-
             constexpr static std::size_t PIN_NUMBER = 1;
+
+            void setState(const Tristate state) { this->_newState = state; }
 
         protected:
             Tristate _curState = Tristate::Undefined;

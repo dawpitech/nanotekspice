@@ -8,7 +8,7 @@
 #ifndef TRUEPRIMARYCOMPONENT_HPP
     #define TRUEPRIMARYCOMPONENT_HPP
 
-    #include "src/AComponent.hpp"
+    #include "../AComponent.hpp"
 
 namespace nts::components::primary
 {
@@ -22,7 +22,6 @@ namespace nts::components::primary
             Tristate compute([[maybe_unused]] std::size_t pin) override { return Tristate::True; }
 
             [[nodiscard]] std::size_t getPinNumber() const override { return PIN_NUMBER; }
-
             constexpr static std::size_t PIN_NUMBER = 1;
     };
 }

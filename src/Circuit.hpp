@@ -12,7 +12,7 @@
     #include <string>
     #include <unordered_map>
 
-    #include "IComponent.hpp"
+    #include "components/IComponent.hpp"
     #include "components/special/InputComponent.hpp"
     #include "components/special/OutputComponent.hpp"
 
@@ -34,8 +34,10 @@ namespace nts
         private:
             std::size_t _curr_tick = 0;
             std::unordered_map<std::string, std::unique_ptr<IComponent>> _components;
-            std::vector<std::pair<std::string, std::reference_wrapper<components::special::OutputComponent>>> _outputs{};
-            std::vector<std::pair<std::string, std::reference_wrapper<components::special::InputComponent>>> _inputs{};
+            std::vector<std::pair<std::string, std::reference_wrapper<components::special::OutputComponent>>>
+                _outputs{};
+            std::vector<std::pair<std::string, std::reference_wrapper<components::special::InputComponent>>>
+                _inputs{};
     };
 }
 

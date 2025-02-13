@@ -8,7 +8,7 @@
 #ifndef OUTPUTCOMPONENT_HPP
     #define OUTPUTCOMPONENT_HPP
 
-    #include "src/IComponent.hpp"
+    #include "../AComponent.hpp"
 
 namespace nts::components::special
 {
@@ -18,25 +18,10 @@ namespace nts::components::special
             explicit OutputComponent(): AComponent(PIN_NUMBER) {}
             ~OutputComponent() override = default;
 
-            void simulate(const std::size_t tick) override
-            {
-                if (this->_connections.at(0) == std::nullopt)
-                    return;
-                this->_connections.at(0).value().first.get().simulate(tick);
-            }
-
-            Tristate compute(const std::size_t pin) override
-            {
-                if (pin != 1)
-                    throw Exceptions::UnknownPinException();
-                if (this->_connections.at(0) == std::nullopt)
-                    return Tristate::Undefined;
-                auto [component, pinOther] = this->_connections.at(0).value();
-                return component.get().compute(pinOther);
-            }
+            void simulate(std::size_t tick) override;
+            Tristate compute(std::size_t pin) override;
 
             [[nodiscard]] std::size_t getPinNumber() const override { return PIN_NUMBER; }
-
             constexpr static std::size_t PIN_NUMBER = 1;
     };
 }

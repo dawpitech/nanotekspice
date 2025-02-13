@@ -26,14 +26,15 @@ namespace nts
     class IComponent
     {
         public:
-            typedef std::vector<std::optional<std::pair<std::reference_wrapper<IComponent>, std::size_t>>> connections_t;
+            typedef std::vector<std::optional<std::pair<std::reference_wrapper<IComponent>, std::size_t>>>
+                connections_t;
 
             virtual ~IComponent() = default;
 
             virtual void simulate(std::size_t tick) = 0;
             virtual Tristate compute(std::size_t pin) = 0;
-            virtual void setLink(std::size_t pin, IComponent &other,
-                std::size_t otherPin) = 0;
+            virtual void setLink(std::size_t pin, IComponent& other,
+                                 std::size_t otherPin) = 0;
 
             [[nodiscard]] virtual std::size_t getPinNumber() const = 0;
             [[nodiscard]] virtual connections_t& getConnections() = 0;
@@ -51,6 +52,7 @@ namespace nts
                 {
                     this->_what = what;
                 }
+
                 [[nodiscard]] const char* what() const noexcept override
                 {
                     return this->_what.c_str();

@@ -10,7 +10,7 @@
 
     #include <memory>
 
-    #include "IComponent.hpp"
+    #include "components/IComponent.hpp"
     #include "components/gates/AndComponent.hpp"
     #include "components/gates/NotComponent.hpp"
     #include "components/gates/OrComponent.hpp"

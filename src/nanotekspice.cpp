@@ -11,9 +11,9 @@
 
 #include "Circuit.hpp"
 #include "Factory.hpp"
-#include "IComponent.hpp"
 #include "parser.hpp"
-#include "src/components/special/InputComponent.hpp"
+#include "components/IComponent.hpp"
+#include "components/special/InputComponent.hpp"
 
 int main(const int argc, const char** argv)
 {
