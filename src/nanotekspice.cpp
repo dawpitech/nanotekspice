@@ -12,7 +12,6 @@
 #include "Circuit.hpp"
 #include "Factory.hpp"
 #include "IComponent.hpp"
-#include "AComponent.hpp"
 #include "parser.hpp"
 #include "src/components/special/InputComponent.hpp"
 
