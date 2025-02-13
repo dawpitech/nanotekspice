@@ -19,7 +19,7 @@ namespace nts::components::primary
             ~FalsePrimaryComponent() override = default;
 
             void simulate([[maybe_unused]] std::size_t tick) override {}
-            Tristate compute([[maybe_unused]] std::size_t pin) override { return Tristate::True; }
+            Tristate compute([[maybe_unused]] std::size_t pin) override { return Tristate::False; }
 
             [[nodiscard]] std::size_t getPinNumber() const override { return PIN_NUMBER; }
 
