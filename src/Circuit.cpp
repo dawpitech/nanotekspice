@@ -17,11 +17,11 @@ void nts::Circuit::addComponent(const std::string& name, std::unique_ptr<ICompon
     IComponent* addedComp = &this->getComponent(name);
     if (const auto outputComp = dynamic_cast<components::special::OutputComponent*>(addedComp))
     {
-        this->_outputs.push_back(std::ref(*outputComp));
+        this->_outputs.emplace_back(name, std::ref(*outputComp));
     }
     if (const auto inputComp = dynamic_cast<components::special::InputComponent*>(addedComp))
     {
-        this->_inputs.push_back(std::ref(*inputComp));
+        this->_inputs.emplace_back(name, std::ref(*inputComp));
     }
 }
 

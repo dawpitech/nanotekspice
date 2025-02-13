@@ -80,13 +80,13 @@ inline std::ostream& operator<<(std::ostream& os, const nts::Tristate& state)
     switch (state)
     {
         case nts::Tristate::True:
-            os << "True";
+            os << "1";
             break;
         case nts::Tristate::False:
-            os << "False";
+            os << "0";
             break;
         case nts::Tristate::Undefined:
-            os << "Undefined";
+            os << "U";
             break;
     }
     return os;

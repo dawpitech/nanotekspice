@@ -40,6 +40,18 @@ int main(const int argc, const char** argv)
         nts::ParserUtils::trim_string(line);
         if (line == "exit")
             break;
+        if (line == "display")
+        {
+            std::cout << "tick: " << circuit.getCurrentTick() << std::endl;
+            std::cout << "input(s):\n";
+            for (const auto&[name, in] : circuit.getInputs())
+                std::cout << "\t" << name << ": " << in.get().compute(1) << "\n";
+            std::cout << "output(s):\n";
+            for (const auto&[name, out] : circuit.getOutputs())
+                std::cout << "\t" << name << ": " << out.get().compute(1) << "\n";
+            std::cout << "> ";
+            continue;
+        }
         if (line.find('=') != std::string::npos) {
             std::string left, right;
             nts::Tristate state;
