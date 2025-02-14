@@ -25,7 +25,6 @@ SRC	=	$(shell find src -name "*.cpp")
 OBJ			= $(SRC:%.cpp=$(BDIR)/release/%.o)
 DEBUG_OBJ	= $(SRC:%.cpp=$(BDIR)/debug/%.o)
 
-
 NAME = nanotekspice
 
 .DEFAULT_GOAL := all

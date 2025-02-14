@@ -80,6 +80,13 @@ namespace nts
                 explicit IncorrectPinUsageException(): GenericNTSException
                     ("Incorrect usage of pin (using input as output or vice-versa)") {}
         };
+
+        class InfiniteRecursiveLoop final : public GenericNTSException
+        {
+            public:
+                explicit InfiniteRecursiveLoop(): GenericNTSException
+                    ("Cannot simulate an infinite recursive loop, states are unclear") {}
+        };
     }
 
     inline Tristate operator^(const Tristate lhs, const Tristate rhs)
@@ -116,6 +123,11 @@ namespace nts
         if (lhs == Tristate::True || rhs == Tristate::True)
             return Tristate::True;
         return Tristate::False;
+    }
+
+    inline Tristate nor(const Tristate lhs, const Tristate rhs)
+    {
+        return !operator|(lhs, rhs);
     }
 }
 
