@@ -113,9 +113,6 @@ void nts::Parser::extract_links(std::string &line) {
 
     l_pin = nts::ParserUtils::get_size_t_from_string(lr);
     r_pin = nts::ParserUtils::get_size_t_from_string(rr);
-
-    DEBUG_PRINT("\t[links] " << ll << " --> " << lr << std::endl);
-    DEBUG_PRINT("\t[links] " << rl << " --> " << rr << std::endl);
     
     IComponent &c1 = this->m_circuit.getComponent(ll);
     IComponent &c2 = this->m_circuit.getComponent(rl);

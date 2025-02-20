@@ -7,16 +7,16 @@
 
 CC	:=	g++
 
-CPPFLAGS	=	-std=c++20
-CPPFLAGS	+=	-W
-CPPFLAGS	+=	-Wall
-CPPFLAGS	+=	-Wextra
-CPPFLAGS	+=	-Wundef
-CPPFLAGS	+=	-Wshadow
-CPPFLAGS	+=	-Wunreachable-code
-CPPFLAGS	+=	-pedantic
-CPPFLAGS	+=	-iquote .
-CPPFLAGS	+=	-MMD -MP
+CXXFLAGS	=	-std=c++20
+CXXFLAGS	+=	-W
+CXXFLAGS	+=	-Wall
+CXXFLAGS	+=	-Wextra
+CXXFLAGS	+=	-Wundef
+CXXFLAGS	+=	-Wshadow
+CXXFLAGS	+=	-Wunreachable-code
+CXXFLAGS	+=	-pedantic
+CXXFLAGS	+=	-iquote .
+CXXFLAGS	+=	-MMD -MP
 
 BDIR	=	.build
 
@@ -34,19 +34,19 @@ all: $(NAME)
 
 $(BDIR)/release/%.o: %.cpp
 	@ mkdir -p $(dir $@)
-	$(CC) -o $@ -c $< $(CPPFLAGS)
+	$(CC) -o $@ -c $< $(CXXFLAGS)
 
 $(NAME): $(OBJ)
-	$(CC) $^ $(CPPFLAGS) -o $@
+	$(CC) $^ $(CXXFLAGS) -o $@
 
 $(BDIR)/debug/%.o: %.cpp
 	@ mkdir -p $(dir $@)
-	$(CC) -o $@ -c $< $(CPPFLAGS)
+	$(CC) -o $@ -c $< $(CXXFLAGS)
 
-debug: CPPFLAGS += -g3 -O0 -DIS_DEBUG
+debug: CXXFLAGS += -g3 -O1 -DIS_DEBUG
 debug: BDIR := .build/debug
 debug: $(DEBUG_OBJ)
-	$(CC) $^ $(CPPFLAGS) -o $@
+	$(CC) $^ $(CXXFLAGS) -o $@
 
 .PHONY: clean
 clean:

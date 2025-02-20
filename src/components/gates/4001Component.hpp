@@ -8,14 +8,17 @@
 #ifndef INC_4001COMPONENT_HPP
     #define INC_4001COMPONENT_HPP
 
+    #include <map>
+
     #include "../AComponent.hpp"
+    #include "../../Circuit.hpp"
 
 namespace nts::components
 {
     class IC4001Component final : public AComponent
     {
         public:
-            explicit IC4001Component(): AComponent(PIN_NUMBER) {}
+            explicit IC4001Component();
             ~IC4001Component() override = default;
 
             void simulate(std::size_t tick) override;
@@ -23,11 +26,11 @@ namespace nts::components
 
             [[nodiscard]] std::size_t getPinNumber() const override { return PIN_NUMBER; }
             constexpr static std::size_t PIN_NUMBER = 14;
+            const static std::map<std::size_t, std::pair<std::string, std::size_t>> INTERNAL_PIN_BINDS;
 
         protected:
-            std::size_t lastTick = 0;
-            Tristate computePin(std::size_t pin);
-            void simulatePin(std::size_t pin, std::size_t tick) const;
+            Circuit _internalCircuit;
+            void updateLinks();
     };
 }
 

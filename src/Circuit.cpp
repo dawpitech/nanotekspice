@@ -22,6 +22,7 @@ void nts::Circuit::addComponent(const std::string& name, std::unique_ptr<ICompon
     {
         this->_inputs.emplace_back(name, std::ref(*inputComp));
     }
+    this->_componentsRef.emplace_back(name, std::ref(*addedComp));
 }
 
 nts::IComponent& nts::Circuit::getComponent(const std::string& name) const

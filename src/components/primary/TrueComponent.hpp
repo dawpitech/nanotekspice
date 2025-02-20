@@ -2,21 +2,21 @@
 ** EPITECH PROJECT, 2025
 ** nanotekspice
 ** File description:
-** TruePrimaryComponent.hpp
+** TrueComponent.hpp
 */
 
-#ifndef TRUEPRIMARYCOMPONENT_HPP
-    #define TRUEPRIMARYCOMPONENT_HPP
+#ifndef TRUECOMPONENT_HPP
+    #define TRUECOMPONENT_HPP
 
     #include "../AComponent.hpp"
 
 namespace nts::components::primary
 {
-    class TruePrimaryComponent final : public AComponent
+    class TrueComponent final : public AComponent
     {
         public:
-            explicit TruePrimaryComponent(): AComponent(PIN_NUMBER) {}
-            ~TruePrimaryComponent() override = default;
+            explicit TrueComponent(): AComponent(PIN_NUMBER) {}
+            ~TrueComponent() override = default;
 
             void simulate([[maybe_unused]] std::size_t tick) override {}
             Tristate compute([[maybe_unused]] std::size_t pin) override { return Tristate::True; }
@@ -25,4 +25,4 @@ namespace nts::components::primary
             constexpr static std::size_t PIN_NUMBER = 1;
     };
 }
-#endif //TRUEPRIMARYCOMPONENT_HPP
+#endif //TRUECOMPONENT_HPP

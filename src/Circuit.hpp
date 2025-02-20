@@ -28,12 +28,16 @@ namespace nts
                 getOutputs() const { return this->_outputs; }
             std::vector<std::pair<std::string, std::reference_wrapper<components::special::InputComponent>>>
                 getInputs() const { return this->_inputs; }
+            std::vector<std::pair<std::string, std::reference_wrapper<IComponent>>>
+                getComponents() const { return this->_componentsRef; }
             std::size_t getCurrentTick() const { return this->_curr_tick; }
             std::size_t upCurrentTick() { return this->_curr_tick++; }
 
         private:
             std::size_t _curr_tick = 0;
             std::unordered_map<std::string, std::unique_ptr<IComponent>> _components;
+            std::vector<std::pair<std::string, std::reference_wrapper<IComponent>>>
+                _componentsRef{};
             std::vector<std::pair<std::string, std::reference_wrapper<components::special::OutputComponent>>>
                 _outputs{};
             std::vector<std::pair<std::string, std::reference_wrapper<components::special::InputComponent>>>

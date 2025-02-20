@@ -11,13 +11,13 @@
     #include <memory>
 
     #include "components/IComponent.hpp"
-    #include "components/gates/AndComponent.hpp"
-    #include "components/gates/NotComponent.hpp"
-    #include "components/gates/OrComponent.hpp"
-    #include "components/gates/XorComponent.hpp"
-    #include "components/gatesIC/4001Component.hpp"
-    #include "components/primary/FalsePrimaryComponent.hpp"
-    #include "components/primary/TruePrimaryComponent.hpp"
+    #include "components/elementary/AndComponent.hpp"
+    #include "components/elementary/NotComponent.hpp"
+    #include "components/elementary/OrComponent.hpp"
+    #include "components/elementary/XorComponent.hpp"
+    #include "components/gates/4001Component.hpp"
+    #include "components/primary/FalseComponent.hpp"
+    #include "components/primary/TrueComponent.hpp"
     #include "components/special/ClockComponent.hpp"
     #include "components/special/InputComponent.hpp"
     #include "components/special/OutputComponent.hpp"
@@ -30,9 +30,9 @@ namespace nts
             static std::unique_ptr<IComponent> createComponent(const std::string& name)
             {
                 if (name == "true")
-                    return std::make_unique<components::primary::TruePrimaryComponent>();
+                    return std::make_unique<components::primary::TrueComponent>();
                 if (name == "false")
-                    return std::make_unique<components::primary::FalsePrimaryComponent>();
+                    return std::make_unique<components::primary::FalseComponent>();
                 if (name == "output")
                     return std::make_unique<components::special::OutputComponent>();
                 if (name == "input")
