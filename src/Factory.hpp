@@ -18,6 +18,7 @@
     #include "components/gates/4001Component.hpp"
     #include "components/primary/FalseComponent.hpp"
     #include "components/primary/TrueComponent.hpp"
+    #include "components/primary/UndefinedComponent.hpp"
     #include "components/special/ClockComponent.hpp"
     #include "components/special/InputComponent.hpp"
     #include "components/special/OutputComponent.hpp"
@@ -33,6 +34,8 @@ namespace nts
                     return std::make_unique<components::primary::TrueComponent>();
                 if (name == "false")
                     return std::make_unique<components::primary::FalseComponent>();
+                if (name == "undefined")
+                    return std::make_unique<components::primary::UndefinedComponent>();
                 if (name == "output")
                     return std::make_unique<components::special::OutputComponent>();
                 if (name == "input")
