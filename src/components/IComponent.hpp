@@ -91,43 +91,55 @@ namespace nts
 
     inline Tristate operator^(const Tristate lhs, const Tristate rhs)
     {
-        if (lhs == Tristate::Undefined || rhs == Tristate::Undefined)
-            return Tristate::Undefined;
-        if (lhs == rhs)
+        if (lhs == Tristate::False && rhs == Tristate::False)
             return Tristate::False;
-        return Tristate::True;
+        if (lhs == Tristate::True && rhs == Tristate::True)
+            return Tristate::False;
+        if (lhs == Tristate::False && rhs == Tristate::True)
+            return Tristate::True;
+        if (lhs == Tristate::True && rhs == Tristate::False)
+            return Tristate::True;
+        return Tristate::Undefined;
     }
 
     inline Tristate operator!(const Tristate state)
     {
-        if (state == Tristate::Undefined)
-            return Tristate::Undefined;
-        if (state == Tristate::False)
-            return Tristate::True;
-        return Tristate::False;
+        switch (state)
+        {
+            case Tristate::False: return Tristate::True;
+            case Tristate::True: return Tristate::False;
+            default:
+            case Tristate::Undefined: return Tristate::Undefined;
+        }
     }
 
-    inline Tristate operator&(const Tristate lhs, const Tristate rhs)
+    inline Tristate operator&&(const Tristate lhs, const Tristate rhs)
     {
-        if (lhs == Tristate::Undefined || rhs == Tristate::Undefined)
+        if (lhs == Tristate::Undefined && rhs == Tristate::True)
+            return Tristate::Undefined;
+        if (lhs == Tristate::True && rhs == Tristate::Undefined)
             return Tristate::Undefined;
         if (lhs == Tristate::True && rhs == Tristate::True)
             return Tristate::True;
         return Tristate::False;
     }
 
-    inline Tristate operator|(const Tristate lhs, const Tristate rhs)
+    inline Tristate operator||(const Tristate lhs, const Tristate rhs)
     {
-        if (lhs == Tristate::Undefined || rhs == Tristate::Undefined)
+        if (lhs == Tristate::False && rhs == Tristate::False)
+            return Tristate::False;
+        if (lhs == Tristate::False && rhs == Tristate::Undefined)
             return Tristate::Undefined;
-        if (lhs == Tristate::True || rhs == Tristate::True)
-            return Tristate::True;
-        return Tristate::False;
+        if (lhs == Tristate::Undefined && rhs == Tristate::False)
+            return Tristate::Undefined;
+        if (lhs == Tristate::Undefined && rhs == Tristate::Undefined)
+            return Tristate::Undefined;
+        return Tristate::True;
     }
 
     inline Tristate nor(const Tristate lhs, const Tristate rhs)
     {
-        return !operator|(lhs, rhs);
+        return operator!(operator||(lhs, rhs));
     }
 }
 

@@ -24,5 +24,5 @@ nts::Tristate nts::components::gates::OrComponent::compute(const std::size_t pin
         return Tristate::Undefined;
     auto [cmpleft, cmpleft_pin] = this->_connections.at(0).value();
     auto [cmpright, cmpright_pin] = this->_connections.at(1).value();
-    return cmpleft.get().compute(cmpleft_pin) | cmpright.get().compute(cmpright_pin);
+    return cmpleft.get().compute(cmpleft_pin) || cmpright.get().compute(cmpright_pin);
 }
