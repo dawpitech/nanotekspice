@@ -8,7 +8,7 @@
 #ifndef INC_4001COMPONENT_HPP
     #define INC_4001COMPONENT_HPP
 
-    #include <map>
+    #include <unordered_map>
 
     #include "../AAdvancedComponent.hpp"
 
@@ -30,5 +30,4 @@ namespace nts::components
             const static std::unordered_map<std::size_t, std::pair<std::string, std::size_t>> INTERNAL_PIN_BINDS;
     };
 }
-
 #endif //INC_4001COMPONENT_HPP

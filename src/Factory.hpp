@@ -16,6 +16,7 @@
     #include "components/elementary/OrComponent.hpp"
     #include "components/elementary/XorComponent.hpp"
     #include "components/gates/4001Component.hpp"
+    #include "components/gates/4011Component.hpp"
     #include "components/primary/FalseComponent.hpp"
     #include "components/primary/TrueComponent.hpp"
     #include "components/primary/UndefinedComponent.hpp"
@@ -52,6 +53,8 @@ namespace nts
                     return std::make_unique<components::gates::OrComponent>();
                 if (name == "4001")
                     return std::make_unique<components::IC4001Component>();
+                if (name == "4011")
+                    return std::make_unique<components::IC4011Component>();
                 throw std::exception();
             }
     };
