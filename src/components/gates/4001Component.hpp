@@ -10,12 +10,11 @@
 
     #include <map>
 
-    #include "../AComponent.hpp"
-    #include "../../Circuit.hpp"
+    #include "../AAdvancedComponent.hpp"
 
 namespace nts::components
 {
-    class IC4001Component final : public AComponent
+    class IC4001Component final : public AAdvancedComponent
     {
         public:
             explicit IC4001Component();
@@ -26,11 +25,9 @@ namespace nts::components
 
             [[nodiscard]] std::size_t getPinNumber() const override { return PIN_NUMBER; }
             constexpr static std::size_t PIN_NUMBER = 14;
-            const static std::map<std::size_t, std::pair<std::string, std::size_t>> INTERNAL_PIN_BINDS;
-
-        protected:
-            Circuit _internalCircuit;
-            void updateLinks();
+            [[nodiscard]] std::unordered_map<std::size_t, std::pair<std::string, std::size_t>> getInternalPinBinds()
+                override { return INTERNAL_PIN_BINDS; }
+            const static std::unordered_map<std::size_t, std::pair<std::string, std::size_t>> INTERNAL_PIN_BINDS;
     };
 }
 
