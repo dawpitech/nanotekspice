@@ -12,7 +12,7 @@
 
 namespace nts::components::special
 {
-    class InputComponent final : public AComponent
+    class InputComponent : public AComponent
     {
         public:
             explicit InputComponent(): AComponent(PIN_NUMBER) {}

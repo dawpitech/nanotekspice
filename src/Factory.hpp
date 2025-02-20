@@ -18,6 +18,7 @@
     #include "components/gatesIC/4001Component.hpp"
     #include "components/primary/FalsePrimaryComponent.hpp"
     #include "components/primary/TruePrimaryComponent.hpp"
+    #include "components/special/ClockComponent.hpp"
     #include "components/special/InputComponent.hpp"
     #include "components/special/OutputComponent.hpp"
 
@@ -36,6 +37,8 @@ namespace nts
                     return std::make_unique<components::special::OutputComponent>();
                 if (name == "input")
                     return std::make_unique<components::special::InputComponent>();
+                if (name == "clock")
+                    return std::make_unique<components::special::ClockComponent>();
                 if (name == "not")
                     return std::make_unique<components::gates::NotComponent>();
                 if (name == "xor")
