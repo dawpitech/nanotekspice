@@ -40,6 +40,7 @@ namespace nts
             [[nodiscard]] virtual connections_t& getConnections() = 0;
 
         protected:
+            virtual Tristate computePin(std::size_t pin) = 0;
             connections_t _connections;
     };
 

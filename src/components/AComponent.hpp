@@ -42,6 +42,18 @@ namespace nts
             {
                 return this->_connections;
             }
+
+
+        protected:
+            Tristate computePin(const std::size_t pin) override
+            {
+                if (this->_connections.at(pin - 1) == std::nullopt)
+                    return Tristate::Undefined;
+
+                auto& [otherComp, otherPin]
+                    = this->_connections.at(pin - 1).value();
+                return otherComp.get().compute(otherPin);
+            }
     };
 }
 #endif //ACOMPONENT_HPP
