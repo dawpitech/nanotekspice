@@ -18,6 +18,7 @@
     #include "components/gates/4001Component.hpp"
     #include "components/gates/4011Component.hpp"
     #include "components/gates/4030Component.hpp"
+    #include "components/gates/4069Component.hpp"
     #include "components/primary/FalseComponent.hpp"
     #include "components/primary/TrueComponent.hpp"
     #include "components/primary/UndefinedComponent.hpp"
@@ -58,6 +59,8 @@ namespace nts
                     return std::make_unique<components::IC4011Component>();
                 if (name == "4030")
                     return std::make_unique<components::IC4030Component>();
+                if (name == "4069")
+                    return std::make_unique<components::IC4069Component>();
                 throw Exceptions::UnknownChipException();
             }
     };
