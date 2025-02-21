@@ -57,6 +57,7 @@ clean:
 .PHONY: fclean
 fclean: clean
 	@ rm -f $(NAME)
+	@ rm -f debug
 
 .NOTPARALLEL: re
 .PHONY: re
