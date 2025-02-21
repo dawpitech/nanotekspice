@@ -19,6 +19,9 @@ namespace nts::components::special
             ~ClockComponent() override = default;
 
             void simulate(std::size_t tick) override;
+
+        protected:
+            std::size_t _currTick = 0;
     };
 }
 #endif //CLOCKCOMPONENT_HPP
