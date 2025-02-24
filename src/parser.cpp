@@ -11,6 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <optional>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -116,6 +117,11 @@ void nts::Parser::extract_links(std::string &line) {
     
     IComponent &c1 = this->m_circuit.getComponent(ll);
     IComponent &c2 = this->m_circuit.getComponent(rl);
+
+    if (c1.getConnections().at(l_pin - 1) != std::nullopt)
+	throw std::runtime_error(std::to_string(l_pin) + " is already linked");
+    if (c2.getConnections().at(r_pin - 1) != std::nullopt)
+	throw std::runtime_error(std::to_string(l_pin) + " is already linked");
 
     if (l_pin > c1.getPinNumber() || l_pin <= 0)
         throw std::runtime_error(std::to_string(l_pin) + " is not a valid pin number for chipset " + ll);
