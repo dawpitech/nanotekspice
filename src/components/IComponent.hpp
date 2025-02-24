@@ -116,6 +116,8 @@ namespace nts
 
     inline Tristate operator&&(const Tristate lhs, const Tristate rhs)
     {
+        if (lhs == Tristate::Undefined && rhs == Tristate::Undefined)
+            return Tristate::Undefined;
         if (lhs == Tristate::Undefined && rhs == Tristate::True)
             return Tristate::Undefined;
         if (lhs == Tristate::True && rhs == Tristate::Undefined)
