@@ -8,6 +8,8 @@
 #include <exception>
 #include <iostream>
 #include <memory>
+#include <algorithm>
+#include <functional>
 
 #include "Circuit.hpp"
 #include "Factory.hpp"
@@ -53,10 +55,18 @@ int main(const int argc, const char** argv)
         {
             std::cout << "tick: " << circuit.getCurrentTick() << std::endl;
             std::cout << "input(s):\n";
-            for (const auto&[name, in] : circuit.getInputs())
+	    auto inputs = circuit.getInputs();
+	    std::sort(inputs.begin(), inputs.end(), [](const auto& a, const auto& b) {
+		return a.first < b.first;
+	    });
+            for (const auto&[name, in] : inputs)
                 std::cout << "  " << name << ": " << in.get().compute(1) << "\n";
             std::cout << "output(s):\n";
-            for (const auto&[name, out] : circuit.getOutputs())
+	    auto outputs = circuit.getOutputs();
+	    std::sort(outputs.begin(), outputs.end(), [](const auto& a, const auto& b) {
+		return a.first < b.first;
+	    });
+            for (const auto&[name, out] : outputs)
                 std::cout << "  " << name << ": " << out.get().compute(1) << "\n";
             std::cout << "> ";
             continue;
