@@ -90,26 +90,18 @@ void nts::shell::run_shell() {
             continue;
         }
         nts::ParserUtils::trim_string(line);
-        if (line == "exit")
+        if (line == "exit") {
             break;
-        if (line == "simulate")
-        {
+	} else if (line == "simulate") {
 	    simulate();
-            continue;
-        }
-        if (line == "display")
-        {
+        } else if (line == "display") {
 	    display();
-            continue;
-        }
-	if (line == "loop")
-	{
+        } else if (line == "loop") {
 	    loop();
-	    continue;
+	} else if (line.find('=') != std::string::npos) {
+	    equal_operator(line);
+        } else {
+	    std::cout << "Unknown command: " << line << std::endl << "> ";
 	}
-        if (line.find('=') != std::string::npos) {
-            continue;
-        }
-        std::cout << "Unknown command: " << line << std::endl << "> ";
     }
 }
