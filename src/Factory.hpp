@@ -11,6 +11,7 @@
     #include <memory>
 
     #include "components/IComponent.hpp"
+    #include "components/advanced/4013Component.hpp"
     #include "components/advanced/4040Component.hpp"
     #include "components/advanced/4512Component.hpp"
     #include "components/elementary/AndComponent.hpp"
@@ -73,6 +74,8 @@ namespace nts
                     return std::make_unique<components::advanced::IC4512Component>();
                 if (name == "4040")
                     return std::make_unique<components::advanced::IC4040Component>();
+                if (name == "4013")
+                    return std::make_unique<components::advanced::IC4013Component>();
                 throw Exceptions::UnknownChipException();
             }
     };
