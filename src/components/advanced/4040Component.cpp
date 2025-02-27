@@ -12,14 +12,14 @@ void nts::components::advanced::IC4040Component::simulate(const std::size_t tick
     if (tick <= this->_internalTick)
         return;
     this->_internalTick = tick;
-    this->_curState = this->_newState;
-    this->_newState = this->computePin(10);
 
     if (this->_connections.at(11 - 1) != std::nullopt)
         this->_connections.at(11 - 1).value().first.get().simulate(tick);
     if (this->_connections.at(10 - 1) != std::nullopt)
         this->_connections.at(10 - 1).value().first.get().simulate(tick);
 
+    this->_curState = this->_newState;
+    this->_newState = this->computePin(10);
     if (this->_curState == Tristate::True &&
         this->_newState == Tristate::False)
         this->_counterValue++;
