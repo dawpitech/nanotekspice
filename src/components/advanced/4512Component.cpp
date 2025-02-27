@@ -48,6 +48,5 @@ nts::Tristate nts::components::advanced::IC4512Component::compute(const std::siz
     int selectedAddr = inputC == Tristate::True ? 1 : 0;
     selectedAddr = (selectedAddr << 1) + (inputB == Tristate::True ? 1 : 0);
     selectedAddr = (selectedAddr << 1) + (inputA == Tristate::True ? 1 : 0);
-    std::cout << selectedAddr;
     return this->computePin(selectedAddr + 1);
 }
