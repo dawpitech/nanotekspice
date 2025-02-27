@@ -1,0 +1,15 @@
+# Basic AND logic gate
+#
+# in_1  -1-+---\
+#          | &  |-3- out
+# in_2  -2-+---/
+
+.chipsets:
+input in_1
+output out
+and gate
+
+.links:
+in_1:1 gate:1
+gate:2 gate:3
+out:1 gate:3
