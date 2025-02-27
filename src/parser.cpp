@@ -109,7 +109,7 @@ void nts::Parser::extract_chipset(std::string &line) {
 
     try {
         auto &c = this->m_circuit.getComponent(right);
-	(void)c;
+        (void)c;
         throw std::runtime_error("chipset with name " + right + " already exists.");
     } catch (...) {
     }
@@ -140,9 +140,9 @@ void nts::Parser::extract_links(std::string &line) {
     IComponent &c2 = this->m_circuit.getComponent(rl);
 
     if (c1.getConnections().at(l_pin - 1) != std::nullopt)
-	throw std::runtime_error(std::to_string(l_pin) + " is already linked");
+        throw std::runtime_error(std::to_string(l_pin) + " is already linked");
     if (c2.getConnections().at(r_pin - 1) != std::nullopt)
-	throw std::runtime_error(std::to_string(l_pin) + " is already linked");
+        throw std::runtime_error(std::to_string(l_pin) + " is already linked");
 
     if (l_pin > c1.getPinNumber() || l_pin <= 0)
         throw std::runtime_error(std::to_string(l_pin) + " is not a valid pin number for chipset " + ll);
@@ -164,45 +164,6 @@ void nts::Parser::dispatch_operations(ParserState state, std::string &line) {
     }
 }
 
-<<<<<<< HEAD
-void nts::Parser::parse_file_internal(std::string filename) {
-    std::ifstream f;
-    std::string line;
-    ParserState state = UNDEFINED;
-
-    f.open(filename);
-    if (!f.is_open())
-        throw std::runtime_error("could not open " + filename);
-
-    while (getline(f, line)) {
-        if (line[0] == '#' || line.empty())
-            continue;
-        nts::ParserUtils::trim_string(line);
-        if (line[0] == '.') {
-            if (line == ".chipsets:") {
-                state = CHIPSETS;
-            } else if (line == ".links:") {
-                state = LINKS;
-            } else {
-                throw std::runtime_error(line + " is not a valid label.");
-            }
-            continue;
-||||||| parent of 4626e65 (fix(parser): state was always undefined)
-void nts::Parser::parse_line(std::string &line) {
-    std::ifstream f;
-    ParserState state = UNDEFINED;
-
-    if (line[0] == '#' || line.empty())
-        return;
-    nts::ParserUtils::trim_string(line);
-    if (line[0] == '.') {
-        if (line == ".chipsets:") {
-            state = CHIPSETS;
-        } else if (line == ".links:") {
-            state = LINKS;
-        } else {
-            throw std::runtime_error(line + " is not a valid label.");
-=======
 void nts::Parser::parse_line(std::string &line, ParserState &state) {
     if (line[0] == '#' || line.empty())
         return;
@@ -214,10 +175,8 @@ void nts::Parser::parse_line(std::string &line, ParserState &state) {
             state = LINKS;
         } else {
             throw std::runtime_error(line + " is not a valid label.");
->>>>>>> 4626e65 (fix(parser): state was always undefined)
         }
-        dispatch_operations(state, line);
+        return;
     }
-
-    f.close();
+    dispatch_operations(state, line);
 }
