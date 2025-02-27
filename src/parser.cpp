@@ -31,7 +31,28 @@ size_t nts::ParserUtils::get_size_t_from_string(std::string &s) {
 }
 
 void nts::Parser::parse_file(std::string filename) {
-    this->parse_file_internal(filename);
+    std::ifstream f;
+    ParserState state = UNDEFINED;
+    std::string line;
+
+    f.open(filename);
+    if (!f.is_open())
+        throw std::runtime_error("could not open " + filename);
+
+    while (getline(f, line)) {
+        this->parse_line(line, state);
+    }
+    f.close();
+}
+
+void nts::Parser::parse_buffer(std::string &buffer) {
+    std::istringstream f(buffer);
+    ParserState state = UNDEFINED;
+    std::string line;    
+
+    while (std::getline(f, line)) {
+        this->parse_line(line, state);
+    }
 }
 
 //removes spaces before and after the string
@@ -143,6 +164,7 @@ void nts::Parser::dispatch_operations(ParserState state, std::string &line) {
     }
 }
 
+<<<<<<< HEAD
 void nts::Parser::parse_file_internal(std::string filename) {
     std::ifstream f;
     std::string line;
@@ -165,6 +187,34 @@ void nts::Parser::parse_file_internal(std::string filename) {
                 throw std::runtime_error(line + " is not a valid label.");
             }
             continue;
+||||||| parent of 4626e65 (fix(parser): state was always undefined)
+void nts::Parser::parse_line(std::string &line) {
+    std::ifstream f;
+    ParserState state = UNDEFINED;
+
+    if (line[0] == '#' || line.empty())
+        return;
+    nts::ParserUtils::trim_string(line);
+    if (line[0] == '.') {
+        if (line == ".chipsets:") {
+            state = CHIPSETS;
+        } else if (line == ".links:") {
+            state = LINKS;
+        } else {
+            throw std::runtime_error(line + " is not a valid label.");
+=======
+void nts::Parser::parse_line(std::string &line, ParserState &state) {
+    if (line[0] == '#' || line.empty())
+        return;
+    nts::ParserUtils::trim_string(line);
+    if (line[0] == '.') {
+        if (line == ".chipsets:") {
+            state = CHIPSETS;
+        } else if (line == ".links:") {
+            state = LINKS;
+        } else {
+            throw std::runtime_error(line + " is not a valid label.");
+>>>>>>> 4626e65 (fix(parser): state was always undefined)
         }
         dispatch_operations(state, line);
     }

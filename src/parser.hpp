@@ -33,6 +33,7 @@ namespace nts {
 	}
 	
 	void parse_file(std::string filename);
+	void parse_buffer(std::string &buffer);
     private:
 	nts::Circuit &m_circuit;
 	
@@ -42,9 +43,9 @@ namespace nts {
 	    UNDEFINED
 	};
 
-	void extract_chipset(std::string &line);
-	void extract_links(std::string &line);
-	void dispatch_operations(ParserState state, std::string &line);
-	void parse_file_internal(std::string filename);
+        void extract_chipset(std::string &line);
+        void extract_links(std::string &line);
+        void dispatch_operations(ParserState state, std::string &line);
+	void parse_line(std::string &line, ParserState &state);
     };
 } // namespace nts
