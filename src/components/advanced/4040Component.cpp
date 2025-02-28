@@ -23,47 +23,47 @@ void nts::components::advanced::IC4040Component::simulate(const std::size_t tick
     if (this->_curState == Tristate::True &&
         this->_newState == Tristate::False)
         this->_counterValue++;
+
+    if (this->_pinStates.at(11 -1) == Tristate::True)
+        this->_counterValue = 0;
+
+    this->_pinStates.at(1 - 1) = this->_counterValue >> 11 & 1 ? Tristate::True : Tristate::False;
+    this->_pinStates.at(2 - 1) = this->_counterValue >> 5 & 1 ? Tristate::True : Tristate::False;
+    this->_pinStates.at(3 - 1) = this->_counterValue >> 4 & 1 ? Tristate::True : Tristate::False;
+    this->_pinStates.at(4 - 1) = this->_counterValue >> 6 & 1 ? Tristate::True : Tristate::False;
+    this->_pinStates.at(5 - 1) = this->_counterValue >> 3 & 1 ? Tristate::True : Tristate::False;
+    this->_pinStates.at(6 - 1) = this->_counterValue >> 2 & 1 ? Tristate::True : Tristate::False;
+    this->_pinStates.at(7 - 1) = this->_counterValue >> 1 & 1 ? Tristate::True : Tristate::False;
+    this->_pinStates.at(8 - 1) = Tristate::Undefined;
+    this->_pinStates.at(9 - 1) = this->_counterValue >> 0 & 1 ? Tristate::True : Tristate::False;
+    this->_pinStates.at(12 - 1) = this->_counterValue >> 8 & 1 ? Tristate::True : Tristate::False;
+    this->_pinStates.at(13 - 1) = this->_counterValue >> 7 & 1 ? Tristate::True : Tristate::False;
+    this->_pinStates.at(14 - 1) = this->_counterValue >> 9 & 1 ? Tristate::True : Tristate::False;
+    this->_pinStates.at(15 - 1) = this->_counterValue >> 10 & 1 ? Tristate::True : Tristate::False;
+    this->_pinStates.at(16 - 1) = Tristate::Undefined;
 }
 
 nts::Tristate nts::components::advanced::IC4040Component::compute(const std::size_t pin)
 {
-    if (this->was_computed) {
-        this->was_computed = false;
+    /*
+    if (this->_was_computed.at(pin - 1)) {
+        this->_was_computed.at(pin - 1) = false;
         return Tristate::Undefined;
     }
-    this->was_computed = true;
+    this->_was_computed.at(pin - 1) = true;
+    */
+
     if (pin == 0 || pin > PIN_NUMBER)
         throw Exceptions::UnknownPinException();
 
-    if (this->computePin(11) == Tristate::Undefined)
+    if (this->_pinStates.at(11 -1) == Tristate::Undefined)
         return Tristate::Undefined;
 
-    if (this->computePin(11) == Tristate::True) {
-        this->_counterValue = 0;
+    if (this->_pinStates.at(11 -1) == Tristate::True) {
         return Tristate::False;
     }
 
-    switch (pin)
-    {
-        case 1: return this->_counterValue >> 11 & 1 ? Tristate::True : Tristate::False;
-        case 2: return this->_counterValue >> 5 & 1 ? Tristate::True : Tristate::False;
-        case 3: return this->_counterValue >> 4 & 1 ? Tristate::True : Tristate::False;
-        case 4: return this->_counterValue >> 6 & 1 ? Tristate::True : Tristate::False;
-        case 5: return this->_counterValue >> 3 & 1 ? Tristate::True : Tristate::False;
-        case 6: return this->_counterValue >> 2 & 1 ? Tristate::True : Tristate::False;
-        case 7: return this->_counterValue >> 1 & 1 ? Tristate::True : Tristate::False;
-        case 9: return this->_counterValue >> 0 & 1 ? Tristate::True : Tristate::False;
-        case 12: return this->_counterValue >> 8 & 1 ? Tristate::True : Tristate::False;
-        case 13: return this->_counterValue >> 7 & 1 ? Tristate::True : Tristate::False;
-        case 14: return this->_counterValue >> 9 & 1 ? Tristate::True : Tristate::False;
-        case 15: return this->_counterValue >> 10 & 1 ? Tristate::True : Tristate::False;
-        case 10:
-        case 11:
-            throw Exceptions::IncorrectPinUsageException();
-        case 8:
-        case 16:
-            return Tristate::Undefined;
-        default:
-            throw Exceptions::UnknownPinException();
-    }
+    if (pin == 10 || pin == 11)
+        throw Exceptions::IncorrectPinUsageException();
+    return this->_pinStates.at(pin - 1);
 }
