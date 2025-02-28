@@ -27,8 +27,7 @@ namespace nts::components::advanced
             constexpr static std::size_t PIN_NUMBER = 16;
 
         private:
-            std::array<bool, PIN_NUMBER> _was_computed;
-            std::array<Tristate, PIN_NUMBER> _pinStates;
+            std::array<Tristate, PIN_NUMBER> _pinStates{};
             int _counterValue = 0;
             Tristate _curState = Tristate::Undefined;
             Tristate _newState = Tristate::Undefined;
