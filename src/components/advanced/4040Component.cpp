@@ -27,6 +27,11 @@ void nts::components::advanced::IC4040Component::simulate(const std::size_t tick
 
 nts::Tristate nts::components::advanced::IC4040Component::compute(const std::size_t pin)
 {
+    if (this->was_computed) {
+        this->was_computed = false;
+        return Tristate::Undefined;
+    }
+    this->was_computed = true;
     if (pin == 0 || pin > PIN_NUMBER)
         throw Exceptions::UnknownPinException();
 
