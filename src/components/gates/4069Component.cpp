@@ -32,6 +32,7 @@ void nts::components::IC4069Component::simulate(const std::size_t tick)
     if (this->_internalTick == tick)
         return;
     this->_internalTick = tick;
+
     this->updateLinks();
     for (auto& [name, comp] : this->_internalCircuit.getComponents())
         comp.get().simulate(tick);

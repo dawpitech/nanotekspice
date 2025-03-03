@@ -34,6 +34,7 @@ void nts::components::IC4001Component::simulate(const std::size_t tick)
     if (this->_internalTick == tick)
         return;
     this->_internalTick = tick;
+
     this->updateLinks();
     for (auto& [name, comp] : this->_internalCircuit.getComponents())
         comp.get().simulate(tick);
@@ -44,13 +45,13 @@ nts::Tristate nts::components::IC4001Component::compute(const std::size_t pin)
     switch (pin)
     {
         case 3:
-            return operator!(this->_internalCircuit.getComponent("gate1").compute(3));
+            return !this->_internalCircuit.getComponent("gate1").compute(3);
         case 4:
-            return operator!(this->_internalCircuit.getComponent("gate2").compute(3));
+            return !this->_internalCircuit.getComponent("gate2").compute(3);
         case 10:
-            return operator!(this->_internalCircuit.getComponent("gate3").compute(3));
+            return !this->_internalCircuit.getComponent("gate3").compute(3);
         case 11:
-            return operator!(this->_internalCircuit.getComponent("gate4").compute(3));
+            return !this->_internalCircuit.getComponent("gate4").compute(3);
         case 7:
         case 14:
             return Tristate::Undefined;
