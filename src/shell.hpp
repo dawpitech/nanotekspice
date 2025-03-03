@@ -1,23 +1,26 @@
 #pragma once
-#include "Circuit.hpp"
+
 #include <atomic>
 
-namespace nts {
-    class shell {
-    private:
-	static std::atomic<bool> running;
-	nts::Circuit &circuit;
+#include "Circuit.hpp"
 
-	static void signal_handler(int);
-	void simulate();
-	void display();
-	void equal_operator(std::string &line);
-	void loop();
+namespace nts
+{
+    class shell
+    {
+        private:
+            static std::atomic<bool> running;
+            Circuit& circuit;
 
-    public:
-	void run_shell();
+            static void signal_handler(int);
+            void simulate() const;
+            void display() const;
+            void equal_operator(std::string& line) const;
+            void loop() const;
 
-	shell(nts::Circuit &c) : circuit(c) {
-	}
+        public:
+            void run_shell() const;
+
+            explicit shell(Circuit& c) : circuit(c) {}
     };
 }

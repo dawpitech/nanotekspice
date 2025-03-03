@@ -5,8 +5,6 @@
 ** AndComponent.cpp
 */
 
-#include <optional>
-
 #include "AndComponent.hpp"
 
 void nts::components::gates::AndComponent::simulate(const std::size_t tick)

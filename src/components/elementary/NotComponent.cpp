@@ -5,8 +5,6 @@
 ** NotComponent.cpp
 */
 
-#include <optional>
-
 #include "NotComponent.hpp"
 
 void nts::components::gates::NotComponent::simulate(const std::size_t tick)

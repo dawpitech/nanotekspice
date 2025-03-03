@@ -11,7 +11,8 @@
     #include <cstddef>
     #include <list>
     #include <optional>
-    #include <vector>
+    #include <utility>
+#include <vector>
 
 namespace nts
 {
@@ -54,18 +55,11 @@ namespace nts
         class GenericNTSException : public std::exception
         {
             public:
-                explicit GenericNTSException(const std::string& what)
-                {
-                    this->_what = what;
-                }
-
-                [[nodiscard]] const char* what() const noexcept override
-                {
-                    return this->_what.c_str();
-                }
+                explicit GenericNTSException(std::string what): _what(std::move(what)) {}
+                [[nodiscard]] const char* what() const noexcept override { return this->_what.c_str(); }
 
             protected:
-                std::string _what;
+                std::string _what{};
         };
 
         class UnknownPinException final : public GenericNTSException

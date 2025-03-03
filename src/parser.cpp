@@ -21,7 +21,8 @@
 #include "components/IComponent.hpp"
 #include "src/Factory.hpp"
 
-size_t nts::ParserUtils::get_size_t_from_string(std::string &s) {
+size_t nts::ParserUtils::get_size_t_from_string(const std::string& s)
+{
     std::istringstream iss(s);
     size_t res;
     iss >> res;
@@ -30,7 +31,8 @@ size_t nts::ParserUtils::get_size_t_from_string(std::string &s) {
     return res;
 }
 
-void nts::Parser::parse_file(std::string filename) {
+void nts::Parser::parse_file(const std::string& filename) const
+{
     std::ifstream f;
     ParserState state = UNDEFINED;
     std::string line;
@@ -39,24 +41,24 @@ void nts::Parser::parse_file(std::string filename) {
     if (!f.is_open())
         throw std::runtime_error("could not open " + filename);
 
-    while (getline(f, line)) {
+    while (getline(f, line))
         this->parse_line(line, state);
-    }
     f.close();
 }
 
-void nts::Parser::parse_buffer(std::string &buffer) {
+void nts::Parser::parse_buffer(const std::string& buffer) const
+{
     std::istringstream f(buffer);
     ParserState state = UNDEFINED;
-    std::string line;    
+    std::string line;
 
-    while (std::getline(f, line)) {
+    while (std::getline(f, line))
         this->parse_line(line, state);
-    }
 }
 
 //removes spaces before and after the string
-void nts::ParserUtils::trim_string(std::string &str) {
+void nts::ParserUtils::trim_string(std::string& str)
+{
     if (str.empty())
         return;
 
@@ -72,72 +74,79 @@ void nts::ParserUtils::trim_string(std::string &str) {
 
 //splits a string around a delimiter
 //trims left and right string
-void nts::ParserUtils::split_in_half(std::string &line, std::string &left, std::string &right, char dl) {
-    std::size_t start, end;
-    start = end = 0;
+void nts::ParserUtils::split_in_half(std::string& line, std::string& left, // NOLINT(*-no-recursion)
+                                     std::string& right, const char dl)
+{
+    std::size_t end;
+    std::size_t start = end = 0;
     int found = 0;
 
-    while ((start = line.find_first_not_of(dl, end)) != std::string::npos) {
+    while ((start = line.find_first_not_of(dl, end)) != std::string::npos)
+    {
         end = line.find(dl, start);
-        if (found == 0 && left == "")
+        if (found == 0 && left.empty())
             left = line.substr(start, end - start);
-        if (found == 1 && right == "")
+        if (found == 1 && right.empty())
             right = line.substr(start, end - start);
         ++found;
         if (found > 2)
             throw std::runtime_error("too many instructions in line");
     }
-    if (found < 2 && dl == ' ') {
+    if (found < 2 && dl == ' ')
         split_in_half(line, left, right, '\t');
-    }
     if (found < 2)
         throw std::runtime_error("not enough instructions in line");
 
-    nts::ParserUtils::trim_string(left);
-    nts::ParserUtils::trim_string(right);
+    trim_string(left);
+    trim_string(right);
 }
 
-void nts::Parser::extract_chipset(std::string &line) {
+void nts::Parser::extract_chipset(std::string& line) const
+{
     std::string left, right;
 
-    nts::ParserUtils::split_in_half(line, left, right);
+    split_in_half(line, left, right);
 
-    if ((left.find(':') != std::string::npos) || (right.find(':') != std::string::npos))
+    if (left.find(':') != std::string::npos || right.find(':') != std::string::npos)
         throw std::runtime_error("link found in chipset section.");
 
     DEBUG_PRINT("[chipset] " << left << " --> " << right << std::endl);
 
-    try {
-        auto &c = this->m_circuit.getComponent(right);
+    try
+    {
+        const auto& c = this->m_circuit.getComponent(right);
         (void)c;
         throw std::runtime_error("chipset with name " + right + " already exists.");
-    } catch (...) {
     }
+    catch (...) {}
 
-    try {
-        std::unique_ptr<nts::IComponent> chipset = nts::Factory::createComponent(left);
+    try
+    {
+        std::unique_ptr<IComponent> chipset = Factory::createComponent(left);
         this->m_circuit.addComponent(right, std::move(chipset));
-    } catch (std::exception &e) {
+    }
+    catch (std::exception&)
+    {
         throw std::runtime_error(left + " is not a valid chipset name.");
     }
 }
 
-void nts::Parser::extract_links(std::string &line) {
+void nts::Parser::extract_links(std::string& line) const
+{
     std::string left, right;
     std::string ll, lr, rl, rr;
-    size_t l_pin, r_pin;
 
-    nts::ParserUtils::split_in_half(line, left, right);
+    split_in_half(line, left, right);
     DEBUG_PRINT("[links] " << left << " --> " << right << std::endl);
 
-    nts::ParserUtils::split_in_half(left, ll, lr, ':');
-    nts::ParserUtils::split_in_half(right, rl, rr, ':');
+    split_in_half(left, ll, lr, ':');
+    split_in_half(right, rl, rr, ':');
 
-    l_pin = nts::ParserUtils::get_size_t_from_string(lr);
-    r_pin = nts::ParserUtils::get_size_t_from_string(rr);
-    
-    IComponent &c1 = this->m_circuit.getComponent(ll);
-    IComponent &c2 = this->m_circuit.getComponent(rl);
+    const size_t l_pin = get_size_t_from_string(lr);
+    const size_t r_pin = get_size_t_from_string(rr);
+
+    IComponent& c1 = this->m_circuit.getComponent(ll);
+    IComponent& c2 = this->m_circuit.getComponent(rl);
 
     if (c1.getConnections().at(l_pin - 1) != std::nullopt)
         throw std::runtime_error(std::to_string(l_pin) + " is already linked");
@@ -151,29 +160,38 @@ void nts::Parser::extract_links(std::string &line) {
     c1.setLink(l_pin, c2, r_pin);
 }
 
-void nts::Parser::dispatch_operations(ParserState state, std::string &line) {
-    switch (state) {
-    case CHIPSETS:
-        extract_chipset(line);
-        break;
-    case LINKS:
-        extract_links(line);
-        break;
-    default:
-        throw std::runtime_error("invalid state in switch case or instruction outside of label");
+void nts::Parser::dispatch_operations(const ParserState state, std::string& line) const
+{
+    switch (state)
+    {
+        case CHIPSETS:
+            extract_chipset(line);
+            break;
+        case LINKS:
+            extract_links(line);
+            break;
+        default:
+            throw std::runtime_error("invalid state in switch case or instruction outside of label");
     }
 }
 
-void nts::Parser::parse_line(std::string &line, ParserState &state) {
+void nts::Parser::parse_line(std::string& line, ParserState& state) const
+{
     if (line[0] == '#' || line.empty())
         return;
-    nts::ParserUtils::trim_string(line);
-    if (line[0] == '.') {
-        if (line == ".chipsets:") {
+    trim_string(line);
+    if (line[0] == '.')
+    {
+        if (line == ".chipsets:")
+        {
             state = CHIPSETS;
-        } else if (line == ".links:") {
+        }
+        else if (line == ".links:")
+        {
             state = LINKS;
-        } else {
+        }
+        else
+        {
             throw std::runtime_error(line + " is not a valid label.");
         }
         return;

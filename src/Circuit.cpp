@@ -5,8 +5,6 @@
 ** Circuit.cpp
 */
 
-#include <iostream>
-
 #include "Circuit.hpp"
 
 void nts::Circuit::addComponent(const std::string& name, std::unique_ptr<IComponent> comp)
@@ -15,13 +13,9 @@ void nts::Circuit::addComponent(const std::string& name, std::unique_ptr<ICompon
 
     IComponent* addedComp = &this->getComponent(name);
     if (const auto outputComp = dynamic_cast<components::special::OutputComponent*>(addedComp))
-    {
         this->_outputs.emplace_back(name, std::ref(*outputComp));
-    }
     if (const auto inputComp = dynamic_cast<components::special::InputComponent*>(addedComp))
-    {
         this->_inputs.emplace_back(name, std::ref(*inputComp));
-    }
     this->_componentsRef.emplace_back(name, std::ref(*addedComp));
 }
 
