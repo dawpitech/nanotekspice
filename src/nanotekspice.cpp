@@ -7,6 +7,7 @@
 
 #include <exception>
 #include <iostream>
+#include <stdexcept>
 #include "parser.hpp"
 #include "shell.hpp"
 
@@ -21,6 +22,8 @@ int main(const int argc, const char** argv)
     try
     {
         p.parse_file(argv[1]);
+	if (circuit.getComponents().empty())
+	    throw std::runtime_error("no components found in file.");
     }
     catch (std::exception& e)
     {
