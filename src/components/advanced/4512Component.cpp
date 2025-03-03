@@ -56,8 +56,6 @@ nts::Tristate nts::components::advanced::IC4512Component::compute(const std::siz
     selectedAddr = (selectedAddr << 1) + (inputB == Tristate::True ? 1 : 0);
     selectedAddr = (selectedAddr << 1) + (inputA == Tristate::True ? 1 : 0);
 
-    std::cout << "Competed address is: " << selectedAddr << std::endl;
-
     if (selectedAddr == 7)
         return this->getLocalPin(9);
     return this->getLocalPin(selectedAddr + 1);
