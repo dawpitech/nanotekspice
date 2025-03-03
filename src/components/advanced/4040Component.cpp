@@ -13,34 +13,30 @@ void nts::components::advanced::IC4040Component::simulate(const std::size_t tick
         return;
     this->_internalTick = tick;
 
-    if (this->_connections.at(11 - 1) != std::nullopt)
-        this->_connections.at(11 - 1).value().first.get().simulate(tick);
-    if (this->_connections.at(10 - 1) != std::nullopt)
-        this->_connections.at(10 - 1).value().first.get().simulate(tick);
+    this->protectedLocalSimulate(11, tick);
+    this->protectedLocalSimulate(10, tick);
 
-    this->_curState = this->_newState;
-    this->_newState = this->computePin(10);
-    if (this->_curState == Tristate::True &&
-        this->_newState == Tristate::False)
+    this->_clockCurrentState = this->_clockFutureState;
+    this->_clockFutureState = this->protectedLocalCompute(10);
+    if (this->_clockCurrentState == Tristate::True &&
+        this->_clockFutureState == Tristate::False)
         this->_counterValue++;
 
-    if (this->_pinStates.at(11 -1) == Tristate::True)
+    if (this->getLocalPin(11) == Tristate::True)
         this->_counterValue = 0;
 
-    this->_pinStates.at(1 - 1) = this->_counterValue >> 11 & 1 ? Tristate::True : Tristate::False;
-    this->_pinStates.at(2 - 1) = this->_counterValue >> 5 & 1 ? Tristate::True : Tristate::False;
-    this->_pinStates.at(3 - 1) = this->_counterValue >> 4 & 1 ? Tristate::True : Tristate::False;
-    this->_pinStates.at(4 - 1) = this->_counterValue >> 6 & 1 ? Tristate::True : Tristate::False;
-    this->_pinStates.at(5 - 1) = this->_counterValue >> 3 & 1 ? Tristate::True : Tristate::False;
-    this->_pinStates.at(6 - 1) = this->_counterValue >> 2 & 1 ? Tristate::True : Tristate::False;
-    this->_pinStates.at(7 - 1) = this->_counterValue >> 1 & 1 ? Tristate::True : Tristate::False;
-    this->_pinStates.at(8 - 1) = Tristate::Undefined;
-    this->_pinStates.at(9 - 1) = this->_counterValue >> 0 & 1 ? Tristate::True : Tristate::False;
-    this->_pinStates.at(12 - 1) = this->_counterValue >> 8 & 1 ? Tristate::True : Tristate::False;
-    this->_pinStates.at(13 - 1) = this->_counterValue >> 7 & 1 ? Tristate::True : Tristate::False;
-    this->_pinStates.at(14 - 1) = this->_counterValue >> 9 & 1 ? Tristate::True : Tristate::False;
-    this->_pinStates.at(15 - 1) = this->_counterValue >> 10 & 1 ? Tristate::True : Tristate::False;
-    this->_pinStates.at(16 - 1) = Tristate::Undefined;
+    this->setLocalPin(1, this->_counterValue >> 11 & 1 ? Tristate::True : Tristate::False);
+    this->setLocalPin(2, this->_counterValue >> 5 & 1 ? Tristate::True : Tristate::False);
+    this->setLocalPin(3, this->_counterValue >> 4 & 1 ? Tristate::True : Tristate::False);
+    this->setLocalPin(4, this->_counterValue >> 6 & 1 ? Tristate::True : Tristate::False);
+    this->setLocalPin(5, this->_counterValue >> 3 & 1 ? Tristate::True : Tristate::False);
+    this->setLocalPin(6, this->_counterValue >> 2 & 1 ? Tristate::True : Tristate::False);
+    this->setLocalPin(7, this->_counterValue >> 1 & 1 ? Tristate::True : Tristate::False);
+    this->setLocalPin(9, this->_counterValue >> 0 & 1 ? Tristate::True : Tristate::False);
+    this->setLocalPin(12, this->_counterValue >> 8 & 1 ? Tristate::True : Tristate::False);
+    this->setLocalPin(13, this->_counterValue >> 7 & 1 ? Tristate::True : Tristate::False);
+    this->setLocalPin(14, this->_counterValue >> 9 & 1 ? Tristate::True : Tristate::False);
+    this->setLocalPin(15, this->_counterValue >> 10 & 1 ? Tristate::True : Tristate::False);
 }
 
 nts::Tristate nts::components::advanced::IC4040Component::compute(const std::size_t pin)
@@ -48,14 +44,13 @@ nts::Tristate nts::components::advanced::IC4040Component::compute(const std::siz
     if (pin == 0 || pin > PIN_NUMBER)
         throw Exceptions::UnknownPinException();
 
-    if (this->_pinStates.at(11 -1) == Tristate::Undefined)
+    if (this->getLocalPin(11 -1) == Tristate::Undefined)
         return Tristate::Undefined;
 
-    if (this->_pinStates.at(11 -1) == Tristate::True) {
+    if (this->getLocalPin(11) == Tristate::True)
         return Tristate::False;
-    }
 
     if (pin == 10 || pin == 11)
         throw Exceptions::IncorrectPinUsageException();
-    return this->_pinStates.at(pin - 1);
+    return this->getLocalPin(pin);
 }

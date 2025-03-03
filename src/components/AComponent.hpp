@@ -21,6 +21,8 @@ namespace nts
             {
                 this->_connections.resize(pinNb);
                 this->_connections.assign(pinNb, std::nullopt);
+                this->_pinStates.resize(pinNb);
+                this->_pinStates.assign(pinNb, Tristate::Undefined);
             }
 
             void setLink(const std::size_t pin, IComponent& other, std::size_t otherPin) override
@@ -45,14 +47,37 @@ namespace nts
 
 
         protected:
-            Tristate computePin(const std::size_t pin) override
+            Tristate protectedLocalCompute(const std::size_t pin) override
             {
                 if (this->_connections.at(pin - 1) == std::nullopt)
                     return Tristate::Undefined;
 
                 auto& [otherComp, otherPin]
                     = this->_connections.at(pin - 1).value();
-                return otherComp.get().compute(otherPin);
+                this->setLocalPin(pin, otherComp.get().compute(otherPin));
+                return this->getLocalPin(pin);
+            }
+
+            void protectedLocalSimulate(const std::size_t pin, const std::size_t tick) override
+            {
+                if (pin == 0 || pin > getPinNumber())
+                    throw Exceptions::UnknownPinException();
+                if (this->_connections.at(pin - 1) != std::nullopt)
+                    this->_connections.at(pin - 1).value().first.get().simulate(tick);
+            }
+
+            void setLocalPin(const std::size_t pin, const Tristate state) override
+            {
+                if (pin == 0 || pin > getPinNumber())
+                    throw Exceptions::UnknownPinException();
+               this->_pinStates.at(pin - 1) = state;
+            }
+
+            Tristate getLocalPin(const std::size_t pin) override
+            {
+                if (pin == 0 || pin > getPinNumber())
+                    throw Exceptions::UnknownPinException();
+                return this->_pinStates.at(pin - 1);
             }
     };
 }

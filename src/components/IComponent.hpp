@@ -41,8 +41,12 @@ namespace nts
 
         protected:
             std::size_t _internalTick = 0;
-            virtual Tristate computePin(std::size_t pin) = 0;
             connections_t _connections;
+            std::vector<Tristate> _pinStates;
+            virtual Tristate protectedLocalCompute(std::size_t pin) = 0;
+            virtual void protectedLocalSimulate(std::size_t pin, std::size_t tick) = 0;
+            virtual void setLocalPin(std::size_t pin, Tristate state) = 0;
+            [[nodiscard]] virtual Tristate getLocalPin(std::size_t pin) = 0;
     };
 
     namespace Exceptions
