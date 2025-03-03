@@ -31,10 +31,6 @@ nts::components::IC4011Component::IC4011Component()
 
 void nts::components::IC4011Component::simulate(const std::size_t tick)
 {
-    if (this->_internalTick == tick)
-        return;
-    this->_internalTick = tick;
-
     this->updateLinks();
     for (auto& [name, comp] : this->_internalCircuit.getComponents())
         comp.get().simulate(tick);
