@@ -89,7 +89,8 @@ void nts::ParserUtils::split_in_half(std::string& line, std::string& left, // NO
         if (found == 1 && right.empty())
             right = line.substr(start, end - start);
         ++found;
-        if (found > 2)
+	std::string errline = line.substr(start, end - start);
+        if (found > 2 && !errline.starts_with("#") && errline != "")
             throw std::runtime_error("too many instructions in line");
     }
     if (found < 2 && dl == ' ')
