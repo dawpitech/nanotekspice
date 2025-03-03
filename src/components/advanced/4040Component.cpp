@@ -22,7 +22,7 @@ void nts::components::advanced::IC4040Component::simulate(const std::size_t tick
         this->_clockFutureState == Tristate::False)
         this->_counterValue++;
 
-    if (this->getLocalPin(11) == Tristate::True)
+    if (this->protectedLocalCompute(11) == Tristate::True)
         this->_counterValue = 0;
 
     this->setLocalPin(1, this->_counterValue >> 11 & 1 ? Tristate::True : Tristate::False);
