@@ -9,12 +9,12 @@
 
 void nts::components::special::InputComponent::simulate([[maybe_unused]] std::size_t tick)
 {
-    this->_curState = this->_newState;
+    this->_currentState = this->_futureState;
 }
 
 nts::Tristate nts::components::special::InputComponent::compute(const std::size_t pin)
 {
     if (pin != PIN_NUMBER)
         throw Exceptions::UnknownPinException();
-    return this->_curState;
+    return this->_currentState;
 }

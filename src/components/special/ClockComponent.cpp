@@ -11,7 +11,8 @@ void nts::components::special::ClockComponent::simulate(const std::size_t tick)
 {
     if (tick <= this->_currTick)
         return;
-    this->_curState = this->_newState;
-    this->_newState = !this->_curState;
     this->_currTick = tick;
+
+    this->_currentState = this->_futureState;
+    this->_futureState = !this->_currentState;
 }

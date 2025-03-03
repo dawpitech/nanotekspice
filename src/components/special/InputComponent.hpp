@@ -24,11 +24,11 @@ namespace nts::components::special
             [[nodiscard]] std::size_t getPinNumber() const override { return PIN_NUMBER; }
             constexpr static std::size_t PIN_NUMBER = 1;
 
-            void setState(const Tristate state) { this->_newState = state; }
+            void setState(const Tristate state) { this->_futureState = state; }
 
         protected:
-            Tristate _curState = Tristate::Undefined;
-            Tristate _newState = Tristate::Undefined;
+            Tristate _currentState = Tristate::Undefined;
+            Tristate _futureState = Tristate::Undefined;
     };
 }
 #endif //INPUTCOMPONENT_HPP
