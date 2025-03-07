@@ -24,6 +24,7 @@ namespace nts
             void addComponent(const std::string& name, std::unique_ptr<IComponent> comp);
             [[nodiscard]] IComponent& getComponent(const std::string& name) const;
 
+            bool isInCircuit(const std::string& name) const;
             std::vector<std::pair<std::string, std::reference_wrapper<components::special::OutputComponent>>>
                 getOutputs() const { return this->_outputs; }
             std::vector<std::pair<std::string, std::reference_wrapper<components::special::InputComponent>>>

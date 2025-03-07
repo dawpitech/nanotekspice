@@ -19,6 +19,16 @@ void nts::Circuit::addComponent(const std::string& name, std::unique_ptr<ICompon
     this->_componentsRef.emplace_back(name, std::ref(*addedComp));
 }
 
+
+bool nts::Circuit::isInCircuit(const std::string& name) const
+{
+    for (auto &e : this->_components) {
+        if (e.first == name)
+            return true;
+    }
+    return false;
+}
+
 nts::IComponent& nts::Circuit::getComponent(const std::string& name) const
 {
     try

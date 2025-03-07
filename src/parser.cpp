@@ -65,7 +65,7 @@ void nts::ParserUtils::trim_string(std::string& str)
     if (str.empty())
         return;
     if (hash_pos != std::string::npos)
-	str = str.substr(0, hash_pos);
+        str = str.substr(0, hash_pos);
 
     j = str.length();
 
@@ -94,7 +94,7 @@ void nts::ParserUtils::split_in_half(std::string& line, std::string& left, // NO
         if (found == 1 && right.empty())
             right = line.substr(start, end - start);
         ++found;
-	std::string errline = line.substr(start, end - start);
+        std::string errline = line.substr(start, end - start);
         if (found > 2 && !errline.starts_with("#") && errline != "")
             throw std::runtime_error("too many instructions in line");
     }
@@ -118,13 +118,8 @@ void nts::Parser::extract_chipset(std::string& line) const
 
     DEBUG_PRINT("[chipset] " << left << " --> " << right << std::endl);
 
-    try
-    {
-        const auto& c = this->m_circuit.getComponent(right);
-        (void)c;
+    if (this->m_circuit.isInCircuit(right))
         throw std::runtime_error("chipset with name " + right + " already exists.");
-    }
-    catch (...) {}
 
     try
     {
