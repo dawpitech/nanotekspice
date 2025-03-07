@@ -8,10 +8,11 @@
 #include <exception>
 #include <iostream>
 #include <stdexcept>
+
 #include "parser.hpp"
 #include "shell.hpp"
 
-int main(const int argc, const char** argv)
+int nts_main(const int argc, const char** argv)
 {
     nts::Circuit circuit;
     const nts::Parser p(circuit);

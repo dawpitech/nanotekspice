@@ -18,14 +18,24 @@ CXXFLAGS	+=	-pedantic
 CXXFLAGS	+=	-iquote .
 CXXFLAGS	+=	-MMD -MP
 
+T_CXXFLAGS	:= $(CXXFLAGS)
+T_CXXFLAGS	+=	-g3 -lcriterion --coverage
+
 BDIR	=	.build
 
-SRC	=	$(shell find src -name "*.cpp")
+SRC	=	$(shell find src -name "*.cpp" -not -path "*/main/*")
+
+T_SRC	:=	$(SRC)
+T_SRC	+=	$(shell find tests -name "*.cpp")
+
+SRC	+=	src/main/main.cpp
 
 OBJ			= $(SRC:%.cpp=$(BDIR)/release/%.o)
 DEBUG_OBJ	= $(SRC:%.cpp=$(BDIR)/debug/%.o)
+T_OBJ		= $(T_SRC:%.cpp=$(BDIR)/test/%.o)
 
 NAME = nanotekspice
+T_NAME	=	unit_tests
 
 .DEFAULT_GOAL := all
 
@@ -48,6 +58,13 @@ debug: BDIR := .build/debug
 debug: $(DEBUG_OBJ)
 	$(CC) $^ $(CXXFLAGS) -o $@
 
+$(BDIR)/test/%.o: %.cpp
+	@ mkdir -p $(dir $@)
+	$(CC) -o $@ -c $< $(T_CXXFLAGS)
+
+$(T_NAME): $(T_OBJ)
+	$(CC) $^ $(T_CXXFLAGS) -o $@
+
 .PHONY: clean
 clean:
 	@ rm -f $(OBJ)
@@ -65,3 +82,4 @@ re: fclean all
 
 -include $(OBJ:.o=.d)
 -include $(DEBUG_OBJ:.o=.d)
+-include $(T_OBJ:.o=.d)
