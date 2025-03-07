@@ -25,8 +25,5 @@ nts::Tristate nts::components::gates::NotComponent::compute(const std::size_t pi
     if (pin != 2)
         throw Exceptions::IncorrectPinUsageException();
 
-    if (this->_connections.at(0) == std::nullopt)
-        return Tristate::Undefined;
-    auto [component, pinOther] = this->_connections.at(0).value();
-    return !component.get().compute(pinOther);
+    return !this->protectedLocalCompute(1);
 }
