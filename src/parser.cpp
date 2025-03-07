@@ -56,19 +56,24 @@ void nts::Parser::parse_buffer(const std::string& buffer) const
         this->parse_line(line, state);
 }
 
-//removes spaces before and after the string
 void nts::ParserUtils::trim_string(std::string& str)
 {
+    size_t hash_pos = str.find('#');
+    size_t i = 0;
+    size_t j = 0;
+
     if (str.empty())
         return;
+    if (hash_pos != std::string::npos)
+	str = str.substr(0, hash_pos);
 
-    size_t i = 0;
-    size_t j = str.length();
+    j = str.length();
 
-    while (i < str.length() && (str[i] == ' ' || str[i] == '\t'))
+    while (i < j && (str[i] == ' ' || str[i] == '\t'))
         i++;
     while (j > i && (str[j - 1] == ' ' || str[j - 1] == '\t'))
         j--;
+
     str = str.substr(i, j - i);
 }
 
@@ -178,9 +183,9 @@ void nts::Parser::dispatch_operations(const ParserState state, std::string& line
 
 void nts::Parser::parse_line(std::string& line, ParserState& state) const
 {
-    if (line[0] == '#' || line.empty())
-        return;
     trim_string(line);
+    if (line.empty() || line[0] == '#')
+        return;
     if (line[0] == '.')
     {
         if (line == ".chipsets:")
