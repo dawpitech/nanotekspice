@@ -1,0 +1,17 @@
+# Basic NOT logic gate
+#
+# in -1-|>o-2- out
+
+.chipsets: #salut c moi
+#iyqg
+input in #caca
+output out#test
+input caca
+not gate    #aaaaaa
+#uwu
+
+    #uwu
+.links:#link
+in:1 gate:1
+in:1 gate:2
+#zazaereg
